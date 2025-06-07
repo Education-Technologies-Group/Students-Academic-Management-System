@@ -2,13 +2,13 @@ package models;
 
 import java.time.LocalDateTime;
 
-public class TicketControllerModel {
+public class TicketModel {
     private LocalDateTime creation_date;
     private String title;
     private String description;
     private LocalDateTime resolved_date;
 
-    public TicketControllerModel(LocalDateTime creation_date, String title, String description, LocalDateTime resolved_date) {
+    public TicketModel(LocalDateTime creation_date, String title, String description, LocalDateTime resolved_date) {
         this.creation_date = creation_date;
         this.title = title;
         this.description = description;
