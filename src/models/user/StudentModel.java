@@ -1,8 +1,8 @@
 package models.user;
 
 import models.AssigmentModel;
-import models.GradeDictionary;
-import models.TicketControllerModel;
+import models.GradeDictionaryModel;
+import models.TicketModel;
 
 import java.util.LinkedList;
 
@@ -41,35 +41,35 @@ public class StudentModel extends UserModel {
         this.department = department;
     }
 
-    public LinkedList<String> getSignedLectures() {
+    public LinkedList<LecturerModel> getSignedLectures() {
         return signed_lectures;
     }
 
-    public void setSignedLectures(LinkedList<String> signed_lectures) {
+    public void setSignedLectures(LinkedList<LecturerModel> signed_lectures) {
         this.signed_lectures = signed_lectures;
     }
 
-    public LinkedList<String> getGrades() {
+    public LinkedList<GradeDictionaryModel> getGrades() {
         return grades;
     }
 
-    public void setGrades(LinkedList<String> grades) {
+    public void setGrades(LinkedList<GradeDictionaryModel> grades) {
         this.grades = grades;
     }
 
-    public LinkedList<String> getAssignments() {
+    public LinkedList<AssigmentModel> getAssignments() {
         return assignments;
     }
 
-    public void setAssignments(LinkedList<String> assignments) {
+    public void setAssignments(LinkedList<AssigmentModel> assignments) {
         this.assignments = assignments;
     }
 
-    public LinkedList<String> getTickets() {
+    public LinkedList<TicketModel> getTickets() {
         return tickets;
     }
 
-    public void setTickets(LinkedList<String> tickets) {
+    public void setTickets(LinkedList<TicketModel> tickets) {
         this.tickets = tickets;
     }
 }
