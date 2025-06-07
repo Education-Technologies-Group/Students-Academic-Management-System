@@ -1,6 +1,6 @@
 package models.user;
 
-class User {
+class UserModel {
     private int id;
     private String username;
     private String password;
@@ -8,7 +8,7 @@ class User {
     private String email;
     private String phone_number;
 
-    public User(int id, String username, String password, String full_name, String email, String phone_number) {
+    public UserModel(int id, String username, String password, String full_name, String email, String phone_number) {
         this.id = id;
         this.username = username;
         this.password = password;

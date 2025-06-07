@@ -1,18 +1,21 @@
 package models.user;
+import models.AnnouncementModel;
+import models.AssigmentModel;
+
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 
-public class Lecturer extends User {
+public class LecturerModel extends UserModel {
     private String department;
     private LinkedList<String> lectures;
     private LinkedList<LocalDateTime> office_hours;
-    private LinkedList<String> given_assignments; // Change Type Later
-    private LinkedList<String> announcements; // Change Type Later
-    private LinkedList<String> tickets; // Change Type Later
+    private LinkedList<AssigmentModel> given_assignments;
+    private LinkedList<AnnouncementModel> announcements;
+    private LinkedList<TicketModel> tickets;
 
 
-    public Lecturer(int id, String username, String password, String full_name, String email, String phone_number,
-                    String department) {
+    public LecturerModel(int id, String username, String password, String full_name, String email, String phone_number,
+                         String department) {
         super(id, username, password, full_name, email, phone_number);
         this.department = department;
         lectures = new LinkedList<>();

@@ -1,17 +1,21 @@
 package models.user;
 
+import models.AssigmentModel;
+import models.GradeDictionary;
+import models.TicketControllerModel;
+
 import java.util.LinkedList;
 
-public class Student extends User {
+public class StudentModel extends UserModel {
     private int studentID;
     private String department;
-    private LinkedList<String> signed_lectures; // Change Type Later
-    private LinkedList<String> grades; // Change Type Later
-    private LinkedList<String> assignments; // Change Type Later
-    private LinkedList<String> tickets;
+    private LinkedList<LecturerModel> signed_lectures;
+    private LinkedList<GradeDictionaryModel> grades;
+    private LinkedList<AssigmentModel> assignments;
+    private LinkedList<TicketModel> tickets;
 
-    public Student(int id, String username, String password, String full_name, String email, String phone_number,
-                   int studentID, String department) {
+    public StudentModel(int id, String username, String password, String full_name, String email, String phone_number,
+                        int studentID, String department) {
         super(id, username, password, full_name, email, phone_number);
         this.studentID = studentID;
         this.department = department;
