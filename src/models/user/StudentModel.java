@@ -1,22 +1,18 @@
 package models.user;
 
-import models.AssigmentModel;
-import models.GradeDictionaryModel;
-import models.TicketModel;
-
 import java.util.LinkedList;
 
 public class StudentModel extends UserModel {
     private int studentID;
     private String department;
-    private LinkedList<LecturerModel> signed_lectures;
-    private LinkedList<GradeDictionaryModel> grades;
-    private LinkedList<AssigmentModel> assignments;
-    private LinkedList<TicketModel> tickets;
+    private LinkedList<Integer> signed_lectures;
+    private LinkedList<Integer> grades;
+    private LinkedList<Integer> assignments;
+    private LinkedList<Integer> tickets;
 
-    public StudentModel(int id, String username, String password, String full_name, String email, String phone_number,
+    public StudentModel(int id, String password, String full_name, String email, String phone_number,
                         int studentID, String department) {
-        super(id, username, password, full_name, email, phone_number);
+        super(id, password, full_name, email, phone_number);
         this.studentID = studentID;
         this.department = department;
         signed_lectures = new LinkedList<>();
@@ -41,35 +37,35 @@ public class StudentModel extends UserModel {
         this.department = department;
     }
 
-    public LinkedList<LecturerModel> getSignedLectures() {
+    public LinkedList<Integer> getSignedLectures() {
         return signed_lectures;
     }
 
-    public void setSignedLectures(LinkedList<LecturerModel> signed_lectures) {
+    public void setSignedLectures(LinkedList<Integer> signed_lectures) {
         this.signed_lectures = signed_lectures;
     }
 
-    public LinkedList<GradeDictionaryModel> getGrades() {
+    public LinkedList<Integer> getGrades() {
         return grades;
     }
 
-    public void setGrades(LinkedList<GradeDictionaryModel> grades) {
+    public void setGrades(LinkedList<Integer> grades) {
         this.grades = grades;
     }
 
-    public LinkedList<AssigmentModel> getAssignments() {
+    public LinkedList<Integer> getAssignments() {
         return assignments;
     }
 
-    public void setAssignments(LinkedList<AssigmentModel> assignments) {
+    public void setAssignments(LinkedList<Integer> assignments) {
         this.assignments = assignments;
     }
 
-    public LinkedList<TicketModel> getTickets() {
+    public LinkedList<Integer> getTickets() {
         return tickets;
     }
 
-    public void setTickets(LinkedList<TicketModel> tickets) {
+    public void setTickets(LinkedList<Integer> tickets) {
         this.tickets = tickets;
     }
 }

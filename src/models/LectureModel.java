@@ -1,6 +1,6 @@
 package models;
 
-import models.user.Lecturer;
+import models.user.LecturerModel;
 
 import java.util.List;
 
@@ -9,10 +9,10 @@ public class LectureModel {
     private String lectureCode ;
     private String lectureName ;
     private List<String> syllabus;
-    private List<String> gradingDictianory;
-    private LecturerModel lecturer ;// tür değiştirilecek
+    private int gradingDictionary;
+    private int lecturer ;
     private List<String> resources ;
-    public LectureModel(String lectureCode, String lectureName, LecturerModel lecturer, List<String> resources) {
+    public LectureModel(String lectureCode, String lectureName, int lecturer, List<String> resources) {
         this.lectureCode = lectureCode;
         this.lectureName = lectureName;
         this.lecturer = lecturer;
@@ -51,19 +51,19 @@ public class LectureModel {
         this.syllabus = syllabus;
     }
 
-    public List<String> getGradingDictianory() {
-        return gradingDictianory;
+    public int getGradingDictionary() {
+        return gradingDictionary;
     }
 
-    public void setGradingDictianory(List<String> gradingDictianory) {
-        this.gradingDictianory = gradingDictianory;
+    public void setGradingDictionary(int gradingDictionary) {
+        this.gradingDictionary = gradingDictionary;
     }
 
-    public String getLecturer() {
+    public int getLecturer() {
         return lecturer;
     }
 
-    public void setLecturer(String lecturer) {
+    public void setLecturer(int lecturer) {
         this.lecturer = lecturer;
     }
 

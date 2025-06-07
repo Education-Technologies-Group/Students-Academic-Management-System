@@ -2,15 +2,13 @@ package models.user;
 
 class UserModel {
     private int id;
-    private String username;
     private String password;
     private String full_name;
     private String email;
     private String phone_number;
 
-    public UserModel(int id, String username, String password, String full_name, String email, String phone_number) {
+    public UserModel(int id, String password, String full_name, String email, String phone_number) {
         this.id = id;
-        this.username = username;
         this.password = password;
         this.full_name = full_name;
         this.email = email;
@@ -23,14 +21,6 @@ class UserModel {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getPassword() {

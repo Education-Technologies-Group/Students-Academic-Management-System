@@ -1,0 +1,14 @@
+{
+  "gradeDictionaries": {
+    "id": 1,
+    "lecture": 2,
+    "criteria": [
+      {
+        "HW": {
+          "Weight": 0.2,
+          "Grade": 40
+        }
+      }
+    ]
+  }
+}
