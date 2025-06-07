@@ -1,5 +1,7 @@
 package models;
 
+import models.user.Lecturer;
+
 import java.util.List;
 
 public class LectureModel {
@@ -8,9 +10,9 @@ public class LectureModel {
     private String lectureName ;
     private List<String> syllabus;
     private List<String> gradingDictianory;
-    private String lecturer ;// tür değiştirilecek
+    private LecturerModel lecturer ;// tür değiştirilecek
     private List<String> resources ;
-    public LectureModel(String lectureCode, String lectureName, String lecturer, List<String> resources) {
+    public LectureModel(String lectureCode, String lectureName, LecturerModel lecturer, List<String> resources) {
         this.lectureCode = lectureCode;
         this.lectureName = lectureName;
         this.lecturer = lecturer;
