@@ -1,22 +1,23 @@
 package repositories.user;
 
+import models.user.LecturerModel;
 import models.user.StudentModel;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-public class StudentRepository {
-    String DB_PATH = "data/students.csv";
-    LinkedList<StudentModel> students;
+public class LecturerRepository {
+    String DB_PATH = "data/lecturers.csv";
+    LinkedList<LecturerModel> lecturers;
     boolean db_changed = false;
-
-    StudentRepository() throws FileNotFoundException {
+    LecturerRepository() throws FileNotFoundException {
         loadFromCSV();
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             if (db_changed) saveToCSV();
@@ -24,36 +25,26 @@ public class StudentRepository {
 
     }
 
-    StudentModel getStudentByID(int id) {
-        for (StudentModel student : students) {
-            if (student.getId() == id) {
-                return student;
+    LecturerModel getLecturer(int id) {
+        for (LecturerModel lecturer : lecturers) {
+            if (lecturer.getId() == id) {
+                return lecturer;
             }
         }
         return null;
     }
 
-    StudentModel getStudentByStudentID(int studentID) {
-        for (StudentModel student : students) {
-            if (student.getStudentID() == studentID) {
-                return student;
-            }
-        }
-        return null;
-    }
-
-    void addStudent(StudentModel student) {
-        students.add(student);
+    void addLecturer(LecturerModel lecturer) {
+        lecturers.add(lecturer);
         db_changed = true;
     }
-
-    void removeStudent(StudentModel student) {
-        students.remove(student);
+    void removeLecturer(LecturerModel lecturer) {
+        lecturers.remove(lecturer);
         db_changed = true;
     }
 
     void loadFromCSV() throws FileNotFoundException {
-        students = new LinkedList<>();
+        lecturers = new LinkedList<>();
         Scanner sc = new Scanner(new File(DB_PATH));
         String line;
         String[] data;
@@ -61,24 +52,28 @@ public class StudentRepository {
             line = sc.nextLine();
             data = line.split(",(?=(?:[^\"]\"[^\"]\")[^\"]$)");
             // Create initial Student
-            students.add(new StudentModel(Integer.parseInt(data[0]), // Primary Key
+            lecturers.add(new LecturerModel(Integer.parseInt(data[0]), // Primary Key
                     data[1], // Hashed Password
                     data[2], // Full Name
                     data[3], // Email
                     data[4], // Phone Number
-                    Integer.parseInt(data[5]), // StudentID
-                    data[6], // Department
-                    Arrays.stream(data[7]. // Grades
+                    data[5], // Department
+                    Arrays.stream(data[6]. // Office Hours
                             split(",")). // Split Given Line
                             filter(s -> !s.isEmpty()). // Handle Empty Lists by Removing Them
-                            map(Integer::parseInt). // Convert Strings into Integers
+                            map(LocalDateTime::parse). // Convert Strings into Integers
                             collect(Collectors.toCollection(LinkedList::new)), // Convert into Linked List
-                    Arrays.stream(data[8]. // Signed Lectures Foreign Keys
+                    Arrays.stream(data[7]. // Lectures Foreign Keys
                                     split(",")).
                             filter(s -> !s.isEmpty()).
                             map(Integer::parseInt).
                             collect(Collectors.toCollection(LinkedList::new)),
-                    Arrays.stream(data[9]. // Assignment Foreign Keys
+                    Arrays.stream(data[8]. // Given Assignment Foreign Keys
+                                    split(",")).
+                            filter(s -> !s.isEmpty()).
+                            map(Integer::parseInt).
+                            collect(Collectors.toCollection(LinkedList::new)),
+                    Arrays.stream(data[9]. // Announcement Foreign Keys
                                     split(",")).
                             filter(s -> !s.isEmpty()).
                             map(Integer::parseInt).
@@ -93,25 +88,24 @@ public class StudentRepository {
     }
 
     void saveToCSV() {
-        System.out.println("Saving Students into Database");
+        System.out.println("Saving Lecturers into Database");
         try (FileWriter writer = new FileWriter(DB_PATH)) {
-            for (StudentModel student : students) {
-                writer.write(student.getId() + ",");
-                writer.write(student.getHashedPassword() + ",");
-                writer.write(student.getFullName() + ",");
-                writer.write(student.getEmail() + ",");
-                writer.write(student.getStudentID() + ",");
-                writer.write(student.getDepartment() + ",");
-                writer.write("\"" + student.getGrades().stream() // Convert Linked List Into CSV Format
+            for (LecturerModel lecturer : lecturers) {
+                writer.write(lecturer.getId() + ",");
+                writer.write(lecturer.getHashedPassword() + ",");
+                writer.write(lecturer.getFullName() + ",");
+                writer.write(lecturer.getEmail() + ",");
+                writer.write(lecturer.getDepartment() + ",");
+                writer.write("\"" + lecturer.getOfficeHours().stream() // Convert Linked List Into CSV Format
                         .map(String::valueOf)
                         .collect(Collectors.joining(",")) + "\",");
-                writer.write("\"" + student.getSignedLectures().stream() // Convert Linked List Into CSV Format
+                writer.write("\"" + lecturer.getGivenAssignments().stream() // Convert Linked List Into CSV Format
                         .map(String::valueOf)
                         .collect(Collectors.joining(",")) + "\",");
-                writer.write("\"" + student.getAssignments().stream() // Convert Linked List Into CSV Format
+                writer.write("\"" + lecturer.getAnnouncements().stream() // Convert Linked List Into CSV Format
                         .map(String::valueOf)
                         .collect(Collectors.joining(",")) + "\",");
-                writer.write("\"" + student.getTickets().stream() // Convert Linked List Into CSV Format
+                writer.write("\"" + lecturer.getTickets().stream() // Convert Linked List Into CSV Format
                         .map(String::valueOf)
                         .collect(Collectors.joining(",")) + "\"\n");
             }
@@ -119,5 +113,4 @@ public class StudentRepository {
             System.out.println("An Error Occurred While Saving Changes to the Database");
         }
     }
-
 }
