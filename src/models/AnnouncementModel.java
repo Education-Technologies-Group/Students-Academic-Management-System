@@ -7,11 +7,22 @@ public class AnnouncementModel {
     private String announcement_description;
     private List<String> attachedFiles;
     private String expirationDate;
+    private int announcement_id;
 
-    public AnnouncementModel(String announcement_description, String announcement_title,String expirationDate) {
+    public int getAnnouncement_id() {
+        return announcement_id;
+    }
+
+    public void setAnnouncement_id(int announcement_id) {
+        this.announcement_id = announcement_id;
+    }
+
+    public AnnouncementModel(int announcement_id, String announcement_description, String announcement_title,String expirationDate,List<String> attachedFiles) {
         this.announcement_description = announcement_description;
         this.announcement_title = announcement_title;
         this.expirationDate = expirationDate;
+        this.attachedFiles = attachedFiles;
+        this.announcement_id = announcement_id;
     }
 
     public String getAnnouncement_title() {

@@ -1,19 +1,25 @@
 package models;
+import java.util.LinkedList;
 import java.util.List;
 
 public class AssigmentModel {
     private int id ;
     private String title ;
     private String description ;
-    private List<String> attachedFiles ;
+    private LinkedList<String> attachedFiles ;
     private  float grade_weight;
     private String given_date;
     private String due_date;
 
-    public AssigmentModel(int id , String title,String description, float grade_weight , String given_date, String due_date) {
+    public float getGrade_weight() {
+        return grade_weight;
+    }
+
+    public AssigmentModel(int id , String title, String description, LinkedList<String> attachedFiles, float grade_weight , String given_date, String due_date) {
         this.id = id;
         this.title = title;
         this.description = description;
+        this.attachedFiles = attachedFiles;
         this.grade_weight = grade_weight;
         this.given_date = given_date;
         this.due_date = due_date;
@@ -43,16 +49,12 @@ public class AssigmentModel {
         this.description = description;
     }
 
-    public List<String> getAttachedFiles() {
+    public LinkedList<String> getAttachedFiles() {
         return attachedFiles;
     }
 
-    public void setAttachedFiles(List<String> attachedFiles) {
+    public void setAttachedFiles(LinkedList<String> attachedFiles) {
         this.attachedFiles = attachedFiles;
-    }
-
-    public float getGradeWeight() {
-        return grade_weight;
     }
 
     public void setGrade_weight(float grade_weight) {

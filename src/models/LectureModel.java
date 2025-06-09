@@ -1,21 +1,25 @@
 package models;
-
 import models.user.LecturerModel;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class LectureModel {
-    private int id ;
+    private int id;
     private String lectureCode ;
     private String lectureName ;
-    private List<String> syllabus;
-    private int gradingDictionary;
-    private int lecturer ;
-    private List<String> resources ;
-    public LectureModel(String lectureCode, String lectureName, int lecturer, List<String> resources) {
+    private LinkedList<String> syllabus;
+    private LinkedList<String> gradingDictianory;
+    private int lecturerid ;
+    private LinkedList<String> resources ;
+
+    public LectureModel(int id,String lectureCode, String lectureName, LinkedList<String> syllabus,LinkedList<String> gradingDictianory, int lecturerid, LinkedList<String> resources) {
+        this.id = id;
         this.lectureCode = lectureCode;
         this.lectureName = lectureName;
-        this.lecturer = lecturer;
+        this.syllabus = syllabus;
+        this.gradingDictianory = gradingDictianory;
+        this.lecturerid = lecturerid;
         this.resources = resources;
     }
 
@@ -43,35 +47,35 @@ public class LectureModel {
         this.lectureName = lectureName;
     }
 
-    public List<String> getSyllabus() {
+    public LinkedList<String> getSyllabus() {
         return syllabus;
     }
 
-    public void setSyllabus(List<String> syllabus) {
+    public void setSyllabus(LinkedList<String> syllabus) {
         this.syllabus = syllabus;
     }
 
-    public int getGradingDictionary() {
-        return gradingDictionary;
+    public LinkedList<String> getGradingDictianory() {
+        return gradingDictianory;
     }
 
-    public void setGradingDictionary(int gradingDictionary) {
-        this.gradingDictionary = gradingDictionary;
+    public void setGradingDictianory(LinkedList<String> gradingDictianory) {
+        this.gradingDictianory = gradingDictianory;
     }
 
-    public int getLecturer() {
-        return lecturer;
+    public int getLecturerID() {
+        return lecturerid;
     }
 
-    public void setLecturer(int lecturer) {
-        this.lecturer = lecturer;
+    public void setLecturerID(int lecturerid) {
+        this.lecturerid = lecturerid;
     }
 
-    public List<String> getResources() {
+    public LinkedList<String> getResources() {
         return resources;
     }
 
-    public void setResources(List<String> resources) {
+    public void setResources(LinkedList<String> resources) {
         this.resources = resources;
     }
 }
