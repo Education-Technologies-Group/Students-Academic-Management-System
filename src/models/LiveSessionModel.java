@@ -1,17 +1,20 @@
 package models;
+
 import java.time.LocalDateTime;
 
 public class LiveSessionModel {
     private int id;
+    private int lecturerId;
     private String title;
     private String description;
     private LocalDateTime creation_date;
     private LocalDateTime scheduled_date;
     private String video;
 
-
-    public LiveSessionModel(int id, String title, String description, LocalDateTime creation_date, LocalDateTime scheduled_date, String video) {
+    public LiveSessionModel(int id, int lecturerId, String title, String description,
+                            LocalDateTime creation_date, LocalDateTime scheduled_date, String video) {
         this.id = id;
+        this.lecturerId = lecturerId;
         this.title = title;
         this.description = description;
         this.creation_date = creation_date;
@@ -21,6 +24,10 @@ public class LiveSessionModel {
 
     public int getId() {
         return id;
+    }
+
+    public int getLecturerId() {
+        return lecturerId;
     }
 
     public String getTitle() {
@@ -47,6 +54,10 @@ public class LiveSessionModel {
         this.id = id;
     }
 
+    public void setLecturerId(int lecturerId) {
+        this.lecturerId = lecturerId;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -66,6 +77,4 @@ public class LiveSessionModel {
     public void setVideo(String video) {
         this.video = video;
     }
-
 }
-

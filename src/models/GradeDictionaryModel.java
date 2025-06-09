@@ -1,16 +1,17 @@
 package models;
+
 import java.util.List;
 
 public class GradeDictionaryModel {
     private int id;
-    private LectureModel belonged_lecture;
+    private int lectureId;
     private List<String> criteria_names;
     private List<Float> criteria_weights;
     private int total;
 
-    public GradeDictionaryModel(int id, LectureModel lectureName, List<String> criteria_names, List<Float> criteria_weights, int total) {
+    public GradeDictionaryModel(int id, int lectureId, List<String> criteria_names, List<Float> criteria_weights, int total) {
         this.id = id;
-        this.belonged_lecture = belonged_lecture;
+        this.lectureId = lectureId;
         this.criteria_names = criteria_names;
         this.criteria_weights = criteria_weights;
         this.total = total;
@@ -20,8 +21,8 @@ public class GradeDictionaryModel {
         return id;
     }
 
-    public LectureModel getLectureName() {
-        return belonged_lecture;
+    public int getLectureId() {
+        return lectureId;
     }
 
     public List<String> getCriteria_names() {
@@ -40,8 +41,8 @@ public class GradeDictionaryModel {
         this.id = id;
     }
 
-    public void setLectureName(LectureModel lectureName) {
-        this.belonged_lecture = lectureName;
+    public void setLectureId(int lectureId) {
+        this.lectureId = lectureId;
     }
 
     public void setCriteria_names(List<String> criteria_names) {
@@ -55,5 +56,4 @@ public class GradeDictionaryModel {
     public void setTotal(int total) {
         this.total = total;
     }
-
 }
