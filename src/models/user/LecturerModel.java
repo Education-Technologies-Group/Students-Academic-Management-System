@@ -1,4 +1,5 @@
 package models.user;
+
 import models.AnnouncementModel;
 import models.AssigmentModel;
 import models.TicketModel;
@@ -8,22 +9,24 @@ import java.util.LinkedList;
 
 public class LecturerModel extends UserModel {
     private String department;
-    private LinkedList<Integer> lectures;
     private LinkedList<LocalDateTime> office_hours;
+    // Foreign Keys
+    private LinkedList<Integer> lectures;
     private LinkedList<Integer> given_assignments;
     private LinkedList<Integer> announcements;
     private LinkedList<Integer> tickets;
 
 
-    public LecturerModel(int id, String password, String full_name, String email, String phone_number,
-                         String department) {
-        super(id, password, full_name, email, phone_number);
+    public LecturerModel(int id, String hashed_password, String full_name, String email, String phone_number,
+                         String department, LinkedList<LocalDateTime> office_hours, LinkedList<Integer> lectures,
+                         LinkedList<Integer> given_assignments, LinkedList<Integer> announcements, LinkedList<Integer> tickets) {
+        super(id, hashed_password, full_name, email, phone_number);
         this.department = department;
-        lectures = new LinkedList<>();
-        office_hours = new LinkedList<>();
-        given_assignments = new LinkedList<>();
-        announcements = new LinkedList<>();
-        tickets = new LinkedList<>();
+        this.office_hours = office_hours;
+        this.lectures = lectures;
+        this.given_assignments = given_assignments;
+        this.announcements = announcements;
+        this.tickets = tickets;
     }
 
     public String getDepartment() {

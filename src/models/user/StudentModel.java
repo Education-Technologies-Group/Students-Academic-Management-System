@@ -5,20 +5,22 @@ import java.util.LinkedList;
 public class StudentModel extends UserModel {
     private int studentID;
     private String department;
-    private LinkedList<Integer> signed_lectures;
     private LinkedList<Integer> grades;
+    // Foreign Keys
+    private LinkedList<Integer> signed_lectures;
     private LinkedList<Integer> assignments;
     private LinkedList<Integer> tickets;
 
-    public StudentModel(int id, String password, String full_name, String email, String phone_number,
-                        int studentID, String department) {
-        super(id, password, full_name, email, phone_number);
+    public StudentModel(int id, String hashed_password, String full_name, String email, String phone_number,
+                        int studentID, String department, LinkedList<Integer> grades, LinkedList<Integer> signed_lectures,
+                        LinkedList<Integer> assignments,LinkedList<Integer> tickets) {
+        super(id, hashed_password, full_name, email, phone_number);
         this.studentID = studentID;
         this.department = department;
-        signed_lectures = new LinkedList<>();
-        grades = new LinkedList<>();
-        assignments = new LinkedList<>();
-        tickets = new LinkedList<>();
+        this.grades = grades;
+        this.signed_lectures = signed_lectures;
+        this.assignments = assignments;
+        this.tickets = tickets;
     }
 
     public int getStudentID() {

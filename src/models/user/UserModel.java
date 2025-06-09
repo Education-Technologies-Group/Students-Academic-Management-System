@@ -2,14 +2,14 @@ package models.user;
 
 class UserModel {
     private int id;
-    private String password;
+    private String hashed_password;
     private String full_name;
     private String email;
     private String phone_number;
 
     public UserModel(int id, String password, String full_name, String email, String phone_number) {
         this.id = id;
-        this.password = password;
+        this.hashed_password = password;
         this.full_name = full_name;
         this.email = email;
         this.phone_number = phone_number;
@@ -23,12 +23,12 @@ class UserModel {
         this.id = id;
     }
 
-    public String getPassword() {
-        return password;
+    public String getHashedPassword() {
+        return hashed_password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setHashedPassword(String hashed_password) {
+        this.hashed_password = hashed_password;
     }
 
     public String getFullName() {
