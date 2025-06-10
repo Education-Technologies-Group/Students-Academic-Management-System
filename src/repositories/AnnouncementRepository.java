@@ -16,7 +16,7 @@ public class AnnouncementRepository {
     LinkedList<AnnouncementModel> announcements;
     boolean db_changed = false;
 
-    AnnouncementRepository() throws FileNotFoundException {
+    public AnnouncementRepository() throws FileNotFoundException {
         loadFromCsv();
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             if (db_changed) {
@@ -25,7 +25,7 @@ public class AnnouncementRepository {
         }));
     }
 
-    AnnouncementModel getAnnouncementByID(int id) {
+    public AnnouncementModel getAnnouncementByID(int id) {
         for (AnnouncementModel announcement : announcements) {
             if (announcement.getAnnouncement_id() == id) {
                 return announcement;
@@ -34,17 +34,17 @@ public class AnnouncementRepository {
         return null;
     }
 
-    void addAnnouncement(AnnouncementModel announcement) {
+    public void addAnnouncement(AnnouncementModel announcement) {
         announcements.add(announcement);
         db_changed = true;
     }
 
-    void removeAnnouncement(AnnouncementModel announcement) {
+    public void removeAnnouncement(AnnouncementModel announcement) {
         announcements.remove(announcement);
         db_changed = true;
     }
 
-    void loadFromCsv() throws FileNotFoundException {
+    public void loadFromCsv() throws FileNotFoundException {
         announcements = new LinkedList<>();
         Scanner sc = new Scanner(new File(DB_Path));
         while (sc.hasNextLine()) {
@@ -63,7 +63,7 @@ public class AnnouncementRepository {
         }
     }
 
-    void saveToCsv() {
+    public void saveToCsv() {
         System.out.println("Saving announcements into database...");
         try (FileWriter writer = new FileWriter(DB_Path)) {
             for (AnnouncementModel announcement : announcements) {

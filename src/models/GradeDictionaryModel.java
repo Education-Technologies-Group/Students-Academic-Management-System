@@ -56,4 +56,15 @@ public class GradeDictionaryModel {
     public void setTotal(int total) {
         this.total = total;
     }
+    @Override
+    public String toString() {
+        return "GradeDictionaryModel{" +
+                "id=" + id +
+                ", lectureId=" + lectureId +
+                ", criteria_names=" + criteria_names +
+                ", criteria_weights=" + criteria_weights +
+                ", total=" + total +
+                '}';
+    }
+
 }

@@ -25,7 +25,7 @@ public class LecturerRepository {
 
     }
 
-    LecturerModel getLecturer(int id) {
+    public LecturerModel getLecturer(int id) {
         for (LecturerModel lecturer : lecturers) {
             if (lecturer.getId() == id) {
                 return lecturer;
