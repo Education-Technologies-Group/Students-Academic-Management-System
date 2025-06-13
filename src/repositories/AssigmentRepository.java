@@ -27,7 +27,7 @@ public class AssigmentRepository {
         }));
     }
 
-    AssigmentModel getAssigmentId(int id) {
+    public AssigmentModel getAssigmentById(int id) {
         for (AssigmentModel assigment : assigments) {
             if (assigment.getId() == id) {
                 return assigment;
@@ -35,7 +35,7 @@ public class AssigmentRepository {
         }
         return null;
     }
-     void addAssigment(AssigmentModel assigment) {
+     public void addAssigment(AssigmentModel assigment) {
         assigments.add(assigment);
         db_changed = true;
      }

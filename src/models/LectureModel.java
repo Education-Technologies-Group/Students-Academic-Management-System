@@ -13,6 +13,7 @@ public class LectureModel {
     private int lecturerid ;
     private LinkedList<String> resources ;
 
+
     public LectureModel(int id,String lectureCode, String lectureName, LinkedList<String> syllabus,LinkedList<String> gradingDictianory, int lecturerid, LinkedList<String> resources) {
         this.id = id;
         this.lectureCode = lectureCode;
@@ -22,6 +23,7 @@ public class LectureModel {
         this.lecturerid = lecturerid;
         this.resources = resources;
     }
+
 
     public int getId() {
         return id;

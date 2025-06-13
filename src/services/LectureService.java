@@ -11,13 +11,11 @@ public class LectureService {
     Scanner sc = new Scanner(System.in);
     LectureRepository lectureRepository ;
     LecturerRepository lecturerRepository ;
-    GradeDictionaryRepository gradeDictionaryRepository ;
     LectureModel lecture ;
 
-    public LectureService(LectureRepository lectureRepository, LecturerRepository lecturerRepository, GradeDictionaryRepository gradeDictionaryRepository) {
+    public LectureService(LectureRepository lectureRepository, LecturerRepository lecturerRepository) {
         this.lectureRepository = lectureRepository;
-        this.lecturerRepository = lecturerRepository;
-        this.gradeDictionaryRepository = gradeDictionaryRepository;
+
     }
     public void getSyllabusByID() {
         System.out.println("Enter the lecture id you would like to look for syllabus: ");
@@ -66,19 +64,10 @@ public class LectureService {
         System.out.println("The resources of this lecture is : ");
         System.out.println(lecture.getResources().toString());
     }
-    public void getGradingCriteriaByLectureID() {
-        System.out.println("Enter the lecture id you would like to look for grading criteria: ");
-        int lectureId = sc.nextInt();
-        lecture = findLecture(lectureId);
-        System.out.println("The grading criteria of this lecture is : ");
-        System.out.println(gradeDictionaryRepository.getGradeDictionariesByLectureId(lectureId));// sıkıntılı bakcaz buraya
 
-    }
     public LectureModel findLecture(int lectureId) {
         LectureModel lecture;
         lecture = lectureRepository.getLectureById(lectureId);
         return lecture;
     }
-
-
 }
