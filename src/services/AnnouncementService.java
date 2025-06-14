@@ -70,14 +70,17 @@ public class AnnouncementService{
         }
     }
 
-    public void viewAnnouncement(){
-        System.out.println("Please enter the id of the assigment you would like to view :");
-        int id = sc.nextInt();
+    public void view_All_announcements(){
         AnnouncementModel announcement;
-        announcement = announcementRepo.getAnnouncementByID(id);
-        System.out.println("Title : "+announcement.getAnnouncement_title());
-        System.out.println("Description : "+announcement.getAnnouncement_description());
-        System.out.println("Expiration Date : "+announcement.getExpirationDate());
+        int id = 1;
+        while (announcementRepo.getAnnouncementByID(id) != null) {
+            announcement = announcementRepo.getAnnouncementByID(id);
+            System.out.println("---- AnnouncementID :" + announcement.getAnnouncement_id() +"----");
+            System.out.println("Title : " + announcement.getAnnouncement_title());
+            System.out.println("Description : " + announcement.getAnnouncement_description());
+            System.out.println("Expiration Date : " + announcement.getExpirationDate());
+            id ++;
+        }
     }
 
 

@@ -21,7 +21,7 @@ public class AssigmentService {
         this.assigmentRepository = assigmentRepository;
         this.studentRepository = studentRepository;
     }
-    public void edit_Due_date() {
+    public void edit_Assignment_Due_date() {
         System.out.print("Please enter the assignment ID for edit your assigment : ");
         String assigmentID = sc.nextLine();
         int assigmentId = Integer.parseInt(assigmentID);
@@ -57,5 +57,18 @@ public class AssigmentService {
             assignment.setTitle(title);
         }else
             System.out.println("Changes could not be applied !");
+    }
+    public void view_All_assigments() {
+        AssigmentModel assigment;
+        int id = 1;
+        while (assigmentRepository.getAssigmentById(id) != null) {
+            assigment = assigmentRepository.getAssigmentById(id);
+            System.out.println("---- AssignmentID :" + assigment.getId() +"----");
+            System.out.println("Title : " + assigment.getTitle());
+            System.out.println("Description : " + assigment.getDescription());
+            System.out.println("Given Date : " + assigment.getGiven_date());
+            System.out.println("Due Date : " + assigment.getDue_date());
+            id ++;
+        }
     }
 }
