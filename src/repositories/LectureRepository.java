@@ -18,8 +18,17 @@ public class LectureRepository {
     LinkedList<LectureModel> lectures;
     boolean db_changed = false;
 
-    public LectureRepository() {
-
+    public LectureRepository() throws FileNotFoundException {
+        loadFromCsv();
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            if (db_changed) {
+                try {
+                    saveToCsv();
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }));
     }
 
     void addLecture(LectureModel lecture) {
@@ -33,7 +42,7 @@ public class LectureRepository {
 
     }
 
-    LectureModel getLectureId(int id) {
+    public LectureModel getLectureById(int id) {
         for (LectureModel lecture : lectures) {
             if (lecture.getId() == id) {
                 return lecture;
@@ -42,7 +51,7 @@ public class LectureRepository {
         return null;
     }
 
-    LectureModel getLectureByName(String name) {
+    public LectureModel getLectureByName(String name) {
         for (LectureModel lecture : lectures) {
             if (lecture.getLectureName().equals(name)) {
                 return lecture;
@@ -51,7 +60,7 @@ public class LectureRepository {
         return null;
     }
 
-    LectureModel getLectureByCode(String code) {
+    public LectureModel getLectureByCode(String code) {
         for (LectureModel lecture : lectures) {
             if (lecture.getLectureCode().equals(code)) {
                 return lecture;

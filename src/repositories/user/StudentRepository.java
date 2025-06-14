@@ -1,5 +1,6 @@
 package repositories.user;
 
+import models.AssigmentModel;
 import models.user.StudentModel;
 
 import java.io.File;
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 public class StudentRepository {
     String DB_PATH = "data/students.csv";
     LinkedList<StudentModel> students;
+    LinkedList<AssigmentModel> assigments;
     boolean db_changed = false;
     int last_pk = 0;
 
