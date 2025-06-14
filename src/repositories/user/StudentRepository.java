@@ -6,25 +6,27 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class StudentRepository {
     String DB_PATH = "data/students.csv";
     LinkedList<StudentModel> students;
     boolean db_changed = false;
+    int last_pk = 0;
 
-    StudentRepository() throws FileNotFoundException {
+    public StudentRepository() throws FileNotFoundException {
         loadFromCSV();
+        if (!students.isEmpty()) {
+            last_pk = students.getLast().getId();
+        }
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             if (db_changed) saveToCSV();
         }));
-
     }
 
-    StudentModel getStudentByID(int id) {
+    // Select Operations
+    public StudentModel getUserByID(int id) {
         for (StudentModel student : students) {
             if (student.getId() == id) {
                 return student;
@@ -33,7 +35,16 @@ public class StudentRepository {
         return null;
     }
 
-    StudentModel getStudentByStudentID(int studentID) {
+    public StudentModel getUserByEmail(String email) {
+        for (StudentModel student : students) {
+            if (student.getEmail().equals(email)) {
+                return student;
+            }
+        }
+        return null;
+    }
+
+    public StudentModel getStudentByStudentID(int studentID) {
         for (StudentModel student : students) {
             if (student.getStudentID() == studentID) {
                 return student;
@@ -42,16 +53,39 @@ public class StudentRepository {
         return null;
     }
 
-    void addStudent(StudentModel student) {
-        students.add(student);
-        db_changed = true;
+    public LinkedList<StudentModel> getStudentsByDepartment(String department) {
+        LinkedList<StudentModel> selected_students = new LinkedList<>();
+        for (StudentModel student : students) {
+            if (student.getDepartment().equals(department)) {
+                selected_students.add(student);
+            }
+        }
+        return selected_students;
     }
 
-    void removeStudent(StudentModel student) {
+    // Edit Operations
+    public void addStudent(StudentModel student) {
+        student.setId(last_pk);
+        students.add(student);
+        db_changed = true;
+        last_pk++;
+    }
+
+    public void updateStudent(StudentModel updated_student) {
+        for (StudentModel old_student : students) {
+            if (old_student.getId() == updated_student.getId()) {
+                old_student.setEmail(updated_student.getEmail());
+            }
+        }
+        throw new NoSuchElementException("Student Not Found");
+    }
+
+    public void removeStudent(StudentModel student) {
         students.remove(student);
         db_changed = true;
     }
 
+    // File Handlers
     void loadFromCSV() throws FileNotFoundException {
         students = new LinkedList<>();
         Scanner sc = new Scanner(new File(DB_PATH));
@@ -60,7 +94,7 @@ public class StudentRepository {
         while (sc.hasNextLine()) {
             line = sc.nextLine();
             data = line.split(",(?=(?:[^\"]\"[^\"]\")[^\"]$)");
-            // Create initial Student
+            // Create Student Model and Add to Repo
             students.add(new StudentModel(Integer.parseInt(data[0]), // Primary Key
                     data[1], // Hashed Password
                     data[2], // Full Name
@@ -118,6 +152,15 @@ public class StudentRepository {
         } catch (IOException e) {
             System.out.println("An Error Occurred While Saving Changes to the Database");
         }
+    }
+
+    // Helpers
+    private StudentModel getFirst() {
+        return students.getFirst();
+    }
+
+    private StudentModel getLast() {
+        return students.getLast();
     }
 
 }

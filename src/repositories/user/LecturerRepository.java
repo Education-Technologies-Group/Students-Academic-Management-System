@@ -17,7 +17,7 @@ public class LecturerRepository {
     String DB_PATH = "data/lecturers.csv";
     LinkedList<LecturerModel> lecturers;
     boolean db_changed = false;
-    LecturerRepository() throws FileNotFoundException {
+    public LecturerRepository() throws FileNotFoundException {
         loadFromCSV();
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             if (db_changed) saveToCSV();
@@ -25,7 +25,7 @@ public class LecturerRepository {
 
     }
 
-    LecturerModel getLecturer(int id) {
+    LecturerModel getUserByID(int id) {
         for (LecturerModel lecturer : lecturers) {
             if (lecturer.getId() == id) {
                 return lecturer;
@@ -33,8 +33,16 @@ public class LecturerRepository {
         }
         return null;
     }
+    public LecturerModel getUserByEmail(String email) {
+        for (LecturerModel lecturer : lecturers) {
+            if (lecturer.getEmail().equals(email)) {
+                return lecturer;
+            }
+        }
+        return null;
+    }
 
-    void addLecturer(LecturerModel lecturer) {
+    public void addLecturer(LecturerModel lecturer) {
         lecturers.add(lecturer);
         db_changed = true;
     }

@@ -1,6 +1,6 @@
 package models.user;
 
-class UserModel {
+public class UserModel {
     private int id;
     private String hashed_password;
     private String full_name;
@@ -22,6 +22,7 @@ class UserModel {
     public void setId(int id) {
         this.id = id;
     }
+
 
     public String getHashedPassword() {
         return hashed_password;

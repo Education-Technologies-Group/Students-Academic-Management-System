@@ -17,7 +17,7 @@ public class StudentAffairsRepository {
     LinkedList<StudentAffairsModel> student_affairs;
     boolean db_changed = false;
 
-    StudentAffairsRepository() throws FileNotFoundException {
+    public StudentAffairsRepository() throws FileNotFoundException {
         loadFromCSV();
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             if (db_changed) saveToCSV();
@@ -25,7 +25,7 @@ public class StudentAffairsRepository {
 
     }
 
-    StudentAffairsModel getStudentAffairByID(int id) {
+    public StudentAffairsModel getUserByID(int id) {
         for (StudentAffairsModel student : student_affairs) {
             if (student.getId() == id) {
                 return student;
@@ -33,13 +33,21 @@ public class StudentAffairsRepository {
         }
         return null;
     }
+    public StudentAffairsModel getUserByEmail(String email) {
+        for (StudentAffairsModel student_affair : student_affairs) {
+            if (student_affair.getEmail().equals(email)) {
+                return student_affair;
+            }
+        }
+        return null;
+    }
 
-    void addStudentAffair(StudentAffairsModel student) {
+    public void addStudentAffair(StudentAffairsModel student) {
         student_affairs.add(student);
         db_changed = true;
     }
 
-    void removeStudentAffair(StudentAffairsModel student) {
+    public void removeStudentAffair(StudentAffairsModel student) {
         student_affairs.remove(student);
         db_changed = true;
     }
