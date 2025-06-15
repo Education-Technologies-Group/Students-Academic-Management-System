@@ -1,22 +1,21 @@
 package models;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
-import java.util.List;
 
-public class AssigmentModel {
+public class AssignmentModel {
     private int id ;
+    private int belonged_lecture;
     private String title ;
     private String description ;
     private LinkedList<String> attachedFiles ;
-    private  float grade_weight;
-    private String given_date;
-    private String due_date;
+    private float grade_weight;
+    private LocalDateTime given_date;
+    private LocalDateTime due_date;
 
-    public float getGrade_weight() {
-        return grade_weight;
-    }
-
-    public AssigmentModel(int id , String title, String description, LinkedList<String> attachedFiles, float grade_weight , String given_date, String due_date) {
+    public AssignmentModel(int id, int belongedLecture, String title, String description, LinkedList<String> attachedFiles,
+                           float grade_weight , LocalDateTime given_date, LocalDateTime due_date) {
         this.id = id;
+        belonged_lecture = belongedLecture;
         this.title = title;
         this.description = description;
         this.attachedFiles = attachedFiles;
@@ -31,6 +30,14 @@ public class AssigmentModel {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getBelongedLecture() {
+        return belonged_lecture;
+    }
+
+    public void setBelongedLecture(int belonged_lecture) {
+        this.belonged_lecture = belonged_lecture;
     }
 
     public String getTitle() {
@@ -56,24 +63,28 @@ public class AssigmentModel {
     public void setAttachedFiles(LinkedList<String> attachedFiles) {
         this.attachedFiles = attachedFiles;
     }
+    public float getGradeWeight() {
+        return grade_weight;
+    }
 
-    public void setGrade_weight(float grade_weight) {
+
+    public void setGradeWeight(float grade_weight) {
         this.grade_weight = grade_weight;
     }
 
-    public String getGiven_date() {
+    public LocalDateTime getGivenDate() {
         return given_date;
     }
 
-    public void setGiven_date(String given_date) {
+    public void setGivenDate(LocalDateTime given_date) {
         this.given_date = given_date;
     }
 
-    public String getDue_date() {
+    public LocalDateTime getDueDate() {
         return due_date;
     }
 
-    public void setDue_date(String due_date) {
+    public void setDueDate(LocalDateTime due_date) {
         this.due_date = due_date;
     }
 

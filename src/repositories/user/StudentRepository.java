@@ -1,6 +1,5 @@
 package repositories.user;
 
-import models.AssigmentModel;
 import models.user.StudentModel;
 
 import java.io.File;
@@ -10,17 +9,17 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static repositories.user.UserRepository.last_pk;
+
 public class StudentRepository {
     String DB_PATH = "data/students.csv";
     LinkedList<StudentModel> students;
-    LinkedList<AssigmentModel> assigments;
-    boolean db_changed = false;
-    int last_pk = 0;
+    private boolean db_changed = false;
 
     public StudentRepository() throws FileNotFoundException {
         loadFromCSV();
         if (!students.isEmpty()) {
-            last_pk = students.getLast().getId();
+            last_pk = Math.max(last_pk, students.getLast().getId() + 1);
         }
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             if (db_changed) saveToCSV();
@@ -65,6 +64,16 @@ public class StudentRepository {
         return selected_students;
     }
 
+    public LinkedList<StudentModel> getStudentsByLecture(int lecture_id) {
+        LinkedList<StudentModel> selected_students = new LinkedList<>();
+        for (StudentModel student : students) {
+            if (student.getSignedLectures().contains(lecture_id)) {
+                selected_students.add(student);
+            }
+        }
+        return selected_students;
+    }
+
     // Edit Operations
     public void addStudent(StudentModel student) {
         student.setId(last_pk);
@@ -95,7 +104,11 @@ public class StudentRepository {
         String[] data;
         while (sc.hasNextLine()) {
             line = sc.nextLine();
-            data = line.split(",(?=(?:[^\"]\"[^\"]\")[^\"]$)");
+            data = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+            for (int i = 0; i < data.length; i++) {
+                data[i] = data[i].replaceAll("^\"|\"$", ""); // Clean Quotes
+            }
+
             // Create Student Model and Add to Repo
             students.add(new StudentModel(Integer.parseInt(data[0]), // Primary Key
                     data[1], // Hashed Password
@@ -154,15 +167,6 @@ public class StudentRepository {
         } catch (IOException e) {
             System.out.println("An Error Occurred While Saving Changes to the Database");
         }
-    }
-
-    // Helpers
-    private StudentModel getFirst() {
-        return students.getFirst();
-    }
-
-    private StudentModel getLast() {
-        return students.getLast();
     }
 
 }

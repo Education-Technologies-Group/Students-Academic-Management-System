@@ -1,128 +1,74 @@
 package services;
 
+import models.LectureModel;
 import models.LiveSessionModel;
+import models.user.StudentModel;
+import models.user.UserModel;
+import repositories.LectureRepository;
 import repositories.LiveSessionRepository;
+import repositories.user.StudentRepository;
+import repositories.user.UserRepository;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.Scanner;
 
 public class LiveSessionService {
     private final Scanner sc = new Scanner(System.in);
-    private final LiveSessionRepository liveSessionRepo;
+    private final LiveSessionRepository liveSessionRepository;
+    private final LectureRepository lectureRepository;
+    private final StudentRepository studentRepository;
 
-    public LiveSessionService(LiveSessionRepository repo) {
-        this.liveSessionRepo = repo;
+    public LiveSessionService(LiveSessionRepository liveSessionRepository, LectureRepository lectureRepository, StudentRepository studentRepository) {
+        this.liveSessionRepository = liveSessionRepository;
+        this.lectureRepository = lectureRepository;
+        this.studentRepository = studentRepository;
     }
 
-    public void joinSession() {
-        System.out.print("Enter Session ID to Join: ");
-        int id = sc.nextInt();
-        LiveSessionModel session = liveSessionRepo.getSessionByID(id);
-        if (session != null) {
-            System.out.println("You joined the session titled: " + session.getTitle());
-        } else {
-            System.out.println("Session not found.");
+    public boolean joinSession(UserModel user, int session_id) {
+        LiveSessionModel session = liveSessionRepository.getSessionByID(session_id);
+        if (session == null) { // Session Not Exists
+            return false;
+        }
+        if (session.getInvitedParticipants().contains(user.getId())) { // User Not Invited
+            session.getActiveParticipants().add(user.getId());
+            return true;
+        }
+        return false;
+    }
+
+    public void leaveSession(UserModel user, int session_id) {
+        LiveSessionModel session = liveSessionRepository.getSessionByID(session_id);
+        session.getActiveParticipants().remove(user.getId());
+    }
+
+    public void inviteStudentByLectureCode(String lecture_code, int session_id) {
+        LiveSessionModel session = liveSessionRepository.getSessionByID(session_id);
+        LectureModel lecture = lectureRepository.getLectureByCode(lecture_code);
+        LinkedList<StudentModel> students = studentRepository.getStudentsByLecture(lecture.getId());
+        for (StudentModel student : students) {
+            session.getInvitedParticipants().add(student.getId());
         }
     }
 
-    public void recordSession() {
-        System.out.print("Enter Session ID to Record: ");
-        int id = sc.nextInt();
-        sc.nextLine(); // clear newline
-        LiveSessionModel session = liveSessionRepo.getSessionByID(id);
-        if (session != null) {
-            System.out.print("Enter recording filename (e.g., lecture1.mp4): ");
-            String video = sc.nextLine();
-            session.setVideo(video);
-            System.out.println("Recording set successfully.");
-        } else {
-            System.out.println("Session not found.");
-        }
+    public void createNewSession(LiveSessionModel live_session) {
+        liveSessionRepository.addSession(live_session);
     }
 
-    public void leaveSession() {
-        System.out.print("Enter Session ID to Leave: ");
-        int id = sc.nextInt();
-        LiveSessionModel session = liveSessionRepo.getSessionByID(id);
-        if (session != null) {
-            System.out.println("You left the session titled: " + session.getTitle());
-        } else {
-            System.out.println("Session not found.");
-        }
+    public void recordSession(LiveSessionModel session) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm");
+        String video_path = session.getTitle() + "_" + session.getScheduled_date().format(formatter);
+        session.setRecord_path(video_path);
     }
 
-    public void inviteSession() {
-        System.out.print("Enter Session ID to Invite Users: ");
-        int id = sc.nextInt();
-        sc.nextLine(); // consume newline
-        LiveSessionModel session = liveSessionRepo.getSessionByID(id);
-        if (session != null) {
-            System.out.print("Enter email addresses to invite (comma-separated): ");
-            String emails = sc.nextLine();
-            String[] emailList = emails.split(",");
-            for (String email : emailList) {
-                System.out.println("Invitation sent to: " + email.trim());
-            }
-        } else {
-            System.out.println("Session not found.");
-        }
+    public LinkedList<LiveSessionModel> listHostSessions(UserModel user) {
+        LinkedList<LiveSessionModel> sessions = liveSessionRepository.getSessionsByHostID(user.getId());
+        return sessions;
     }
 
-    public void listSessionsByLecturer(int lecturerId) {
-        LinkedList<LiveSessionModel> sessions = liveSessionRepo.getSessionsByLecturerID(lecturerId);
-        if (sessions.isEmpty()) {
-            System.out.println("No sessions found for lecturer ID: " + lecturerId);
-        } else {
-            for (LiveSessionModel session : sessions) {
-                System.out.println(session.getId() + " | " + session.getTitle() + " | " + session.getScheduled_date());
-            }
-        }
+    public LinkedList<LiveSessionModel> listUserSessions(UserModel user) {
+        LinkedList<LiveSessionModel> user_sessions =  liveSessionRepository.getSessionsByUserID(user.getId());
+        return user_sessions;
     }
 
-    public void createNewSession() {
-        try {
-            System.out.print("Enter Lecturer ID: ");
-            int lecturerId = sc.nextInt();
-            sc.nextLine(); // clear newline
-
-            System.out.print("Enter Title: ");
-            String title = sc.nextLine();
-
-            System.out.print("Enter Description: ");
-            String description = sc.nextLine();
-
-            LocalDateTime creationDate = LocalDateTime.now();
-
-            System.out.print("Enter Scheduled Date (yyyy-MM-ddTHH:mm:ss): ");
-            String input = sc.nextLine();
-            LocalDateTime scheduledDate = LocalDateTime.parse(input);
-
-            LiveSessionModel session = new LiveSessionModel(
-                    generateSessionID(),
-                    lecturerId,
-                    title,
-                    description,
-                    creationDate,
-                    scheduledDate,
-                    ""
-            );
-
-            liveSessionRepo.addSession(session);
-            System.out.println("Session created successfully.");
-
-        } catch (Exception e) {
-            System.out.println("Error creating session: " + e.getMessage());
-        }
-    }
-
-    private int generateSessionID() {
-        // Basic auto-incrementing logic
-        int maxId = 0;
-        for (LiveSessionModel session : liveSessionRepo.getSessionsByLecturerID(0)) {
-            maxId = Math.max(maxId, session.getId());
-        }
-        return maxId + 1;
-    }
 }

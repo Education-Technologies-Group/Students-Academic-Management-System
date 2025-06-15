@@ -1,9 +1,5 @@
 package models.user;
 
-import models.AnnouncementModel;
-import models.AssigmentModel;
-import models.TicketModel;
-
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 

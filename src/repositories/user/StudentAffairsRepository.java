@@ -12,6 +12,9 @@ import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+import static repositories.user.UserRepository.last_pk;
+
+
 public class StudentAffairsRepository {
     String DB_PATH = "data/student_affairs.csv";
     LinkedList<StudentAffairsModel> student_affairs;
@@ -19,6 +22,9 @@ public class StudentAffairsRepository {
 
     public StudentAffairsRepository() throws FileNotFoundException {
         loadFromCSV();
+        if (!student_affairs.isEmpty()) {
+            last_pk = Math.max(last_pk, student_affairs.getLast().getId());
+        }
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             if (db_changed) saveToCSV();
         }));
@@ -33,6 +39,7 @@ public class StudentAffairsRepository {
         }
         return null;
     }
+
     public StudentAffairsModel getUserByEmail(String email) {
         for (StudentAffairsModel student_affair : student_affairs) {
             if (student_affair.getEmail().equals(email)) {

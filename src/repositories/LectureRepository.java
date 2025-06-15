@@ -1,9 +1,5 @@
 package repositories;
 
-import models.LectureModel;
-import models.user.LecturerModel;
-import models.user.StudentModel;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -13,8 +9,10 @@ import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+import models.LectureModel;
+
 public class LectureRepository {
-    String db_path = "lectures.csv";
+    String db_path = "data/lectures.csv";
     LinkedList<LectureModel> lectures;
     boolean db_changed = false;
 
@@ -31,17 +29,7 @@ public class LectureRepository {
         }));
     }
 
-    void addLecture(LectureModel lecture) {
-        lectures.add(lecture);
-        db_changed = true;
-    }
-
-    void removeLecture(LectureModel lecture) {
-        lectures.remove(lecture);
-        db_changed = true;
-
-    }
-
+    // Select Operations
     public LectureModel getLectureById(int id) {
         for (LectureModel lecture : lectures) {
             if (lecture.getId() == id) {
@@ -69,6 +57,27 @@ public class LectureRepository {
         return null;
     }
 
+    public LinkedList<LectureModel> getLecturesById(LinkedList<Integer> id_list) {
+        LinkedList<LectureModel> lectures = new LinkedList<>();
+        for (Integer id : id_list) {
+            lectures.add(getLectureById(id));
+        }
+        return lectures;
+    }
+
+    // Edit Operations
+    void addLecture(LectureModel lecture) {
+        lectures.add(lecture);
+        db_changed = true;
+    }
+
+    void removeLecture(LectureModel lecture) {
+        lectures.remove(lecture);
+        db_changed = true;
+
+    }
+
+    // File Handlers
     void loadFromCsv() throws FileNotFoundException {
         lectures = new LinkedList<>();
         Scanner sc = new Scanner(new File(db_path));
@@ -76,22 +85,18 @@ public class LectureRepository {
         String[] data;
         while (sc.hasNextLine()) {
             line = sc.nextLine();
-            data = line.split(",(?=(?:[^\"]\"[^\"]\")[^\"]$)");
+            data = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+            for (int i = 0; i < data.length; i++) {
+                data[i] = data[i].replaceAll("^\"|\"$", ""); // Clean Quotes
+            }
             // create initial lecture
             lectures.add(new LectureModel(
                     Integer.parseInt(data[0]),//id
                     data[1],//code
                     data[2],//name
-                    Arrays.stream(data[3]. // syylabus
-                            split(",")). // Split Given Line
-                            filter(s -> !s.isEmpty()). // Handle Empty Lists by Removing Them
-                            collect(Collectors.toCollection(LinkedList::new)), // Convert into Linked List
-                    Arrays.stream(data[4]. // gradingDictianory
-                            split(",")). // Split Given Line
-                            filter(s -> !s.isEmpty()). // Handle Empty Lists by Removing Them
-                            collect(Collectors.toCollection(LinkedList::new)), // Convert into Linked List
-                    Integer.parseInt(data[5]),
-                    Arrays.stream(data[6]. // resources
+                    data[3],  // Syllabus
+                    Integer.parseInt(data[4]),
+                    Arrays.stream(data[5]. // resources
                             split(",")). // Split Given Line
                             filter(s -> !s.isEmpty()). // Handle Empty Lists by Removing Them
                             collect(Collectors.toCollection(LinkedList::new)) // Convert into Linked List
@@ -106,13 +111,7 @@ public class LectureRepository {
                 writer.write(lecture.getId() + ",");
                 writer.write(lecture.getLectureCode() + ",");
                 writer.write(lecture.getLectureName() + ",");
-                writer.write("\"" + lecture.getSyllabus().stream() // Convert Linked List Into CSV Format
-                        .map(String::valueOf)
-                        .collect(Collectors.joining(",")) + "\",");
-                writer.write("\"" + lecture.getGradingDictianory().stream() // Convert Linked List Into CSV Format
-                        .map(String::valueOf)
-                        .collect(Collectors.joining(",")) + "\",");
-
+                writer.write(lecture.getSyllabus() + ",");
                 writer.write(lecture.getLecturerID() + ",");
                 writer.write("\"" + lecture.getResources().stream() // Convert Linked List Into CSV Format
                         .map(String::valueOf)

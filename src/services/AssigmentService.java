@@ -1,74 +1,45 @@
 package services;
-import models.AssigmentModel;
-import models.LectureModel;
+
+import models.AssignmentModel;
+import models.user.LecturerModel;
 import models.user.StudentModel;
-import repositories.AssigmentRepository;
+import models.user.UserModel;
+import repositories.AssignmentRepository;
 import repositories.LectureRepository;
 import repositories.user.StudentRepository;
 
 import java.util.LinkedList;
-import java.util.Scanner;
 
 public class AssigmentService {
-    Scanner sc = new Scanner(System.in);
-    LinkedList<StudentModel> students ;
-    LinkedList<AssigmentModel> assigments ;
+    private final AssignmentRepository assigmentRepository;
+    private final LectureRepository lectureRepository;
+    private final StudentRepository studentRepository;
 
-
-    AssigmentRepository assigmentRepository;
-    StudentRepository studentRepository;
-    public AssigmentService(AssigmentRepository assigmentRepository, StudentRepository studentRepository) {
+    public AssigmentService(AssignmentRepository assigmentRepository, LectureRepository lectureRepository, StudentRepository studentRepository) {
         this.assigmentRepository = assigmentRepository;
+        this.lectureRepository = lectureRepository;
         this.studentRepository = studentRepository;
     }
-    public void edit_Assignment_Due_date() {
-        System.out.print("Please enter the assignment ID for edit your assigment : ");
-        String assigmentID = sc.nextLine();
-        int assigmentId = Integer.parseInt(assigmentID);
 
-        AssigmentModel assignment ;
-        assignment = assigmentRepository.getAssigmentById(assigmentId);
-
-        System.out.println("Please enter the new due date for edit your assigment : ");
-        String dueDate = sc.nextLine();
-
-        System.out.println("Your new due date has been edited !");
-        System.out.println("Do you want to save your changes ?  (Y/N) ");
-        String save = sc.nextLine();
-
-        if (save.equalsIgnoreCase("Y")) {
-            assignment.setDue_date(dueDate);
-        }
-        else
-            System.out.println("Changes could not be applied !");
-
+    public LinkedList<AssignmentModel> sendStudentAssignments(StudentModel student) {
+        LinkedList<Integer> student_assignments = student.getAssignments();
+        return assigmentRepository.getStudentAssignments(student_assignments);
     }
-    public void edit_assignment_title() {
-        System.out.print("Please enter the assignment ID for edit your assigment title : ");
-        int assigmentID = sc.nextInt();
 
-        AssigmentModel assignment = assigmentRepository.getAssigmentById(assigmentID);
-        System.out.println("Please enter the new title for edit your assigment : ");
-        String title = sc.nextLine();
-        System.out.println("Your new title has been edited !");
-        System.out.println("Do you want to save your changes ? (Y/N)");
-        String save = sc.nextLine();
-        if (save.equalsIgnoreCase("Y")) {
-            assignment.setTitle(title);
-        }else
-            System.out.println("Changes could not be applied !");
+    public boolean createAssignment(AssignmentModel assignment) {
+        return assigmentRepository.addAssigment(assignment);
     }
-    public void view_All_assigments() {
-        AssigmentModel assigment;
-        int id = 1;
-        while (assigmentRepository.getAssigmentById(id) != null) {
-            assigment = assigmentRepository.getAssigmentById(id);
-            System.out.println("---- AssignmentID :" + assigment.getId() +"----");
-            System.out.println("Title : " + assigment.getTitle());
-            System.out.println("Description : " + assigment.getDescription());
-            System.out.println("Given Date : " + assigment.getGiven_date());
-            System.out.println("Due Date : " + assigment.getDue_date());
-            id ++;
-        }
+
+    public LinkedList<AssignmentModel> sendLectureAssignments(String lectureCode) {
+        int lecture_id = lectureRepository.getLectureByCode(lectureCode).getId();
+        return assigmentRepository.getAssignmentsByLectureID(lecture_id);
+    }
+
+    public boolean checkOwnership(LecturerModel lecturer, int assignment_id) {
+        return lecturer.getLectures().contains(assigmentRepository.getAssigmentById(assignment_id).getBelongedLecture());
+    }
+
+    public boolean deleteAssignment(int assignmentId) {
+        return assigmentRepository.removeAssigment(assignmentId);
     }
 }

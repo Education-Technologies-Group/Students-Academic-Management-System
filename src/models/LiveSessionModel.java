@@ -1,33 +1,41 @@
 package models;
 
 import java.time.LocalDateTime;
+import java.util.LinkedList;
 
 public class LiveSessionModel {
     private int id;
-    private int lecturerId;
+    private int hostID;
     private String title;
     private String description;
     private LocalDateTime creation_date;
     private LocalDateTime scheduled_date;
-    private String video;
+    private String record_path;
+    // Foreign Keys
+    private LinkedList<Integer> invited_participants;
+    private LinkedList<Integer> active_participants;
 
-    public LiveSessionModel(int id, int lecturerId, String title, String description,
-                            LocalDateTime creation_date, LocalDateTime scheduled_date, String video) {
+
+    public LiveSessionModel(int id, int hostID, String title, String description,
+                            LocalDateTime creation_date, LocalDateTime scheduled_date, String record_path,
+                            LinkedList<Integer> invited_participants, LinkedList<Integer> active_participants) {
         this.id = id;
-        this.lecturerId = lecturerId;
+        this.hostID = hostID;
         this.title = title;
         this.description = description;
         this.creation_date = creation_date;
         this.scheduled_date = scheduled_date;
-        this.video = video;
+        this.record_path = record_path;
+        this.invited_participants = invited_participants;
+        this.active_participants = active_participants;
     }
 
     public int getId() {
         return id;
     }
 
-    public int getLecturerId() {
-        return lecturerId;
+    public int getHostID() {
+        return hostID;
     }
 
     public String getTitle() {
@@ -46,16 +54,16 @@ public class LiveSessionModel {
         return scheduled_date;
     }
 
-    public String getVideo() {
-        return video;
+    public String getRecord_path() {
+        return record_path;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public void setLecturerId(int lecturerId) {
-        this.lecturerId = lecturerId;
+    public void setHostID(int hostID) {
+        this.hostID = hostID;
     }
 
     public void setTitle(String title) {
@@ -74,7 +82,23 @@ public class LiveSessionModel {
         this.scheduled_date = scheduled_date;
     }
 
-    public void setVideo(String video) {
-        this.video = video;
+    public void setRecord_path(String record_path) {
+        this.record_path = record_path;
+    }
+
+    public LinkedList<Integer> getActiveParticipants() {
+        return active_participants;
+    }
+
+    public void setActiveParticipants(LinkedList<Integer> active_participants) {
+        this.active_participants = active_participants;
+    }
+
+    public LinkedList<Integer> getInvitedParticipants() {
+        return invited_participants;
+    }
+
+    public void setInvitedParticipants(LinkedList<Integer> invited_participants) {
+        this.invited_participants = invited_participants;
     }
 }

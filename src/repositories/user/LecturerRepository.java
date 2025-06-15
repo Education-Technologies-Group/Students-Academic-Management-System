@@ -13,19 +13,25 @@ import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+import static repositories.user.UserRepository.last_pk;
+
 public class LecturerRepository {
     String DB_PATH = "data/lecturers.csv";
     LinkedList<LecturerModel> lecturers;
     boolean db_changed = false;
+
     public LecturerRepository() throws FileNotFoundException {
         loadFromCSV();
+        if (!lecturers.isEmpty()) {
+            last_pk = Math.max(last_pk, lecturers.getLast().getId());
+        }
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             if (db_changed) saveToCSV();
         }));
 
     }
 
-    LecturerModel getUserByID(int id) {
+    public LecturerModel getUserByID(int id) {
         for (LecturerModel lecturer : lecturers) {
             if (lecturer.getId() == id) {
                 return lecturer;
@@ -33,6 +39,7 @@ public class LecturerRepository {
         }
         return null;
     }
+
     public LecturerModel getUserByEmail(String email) {
         for (LecturerModel lecturer : lecturers) {
             if (lecturer.getEmail().equals(email)) {
@@ -46,6 +53,7 @@ public class LecturerRepository {
         lecturers.add(lecturer);
         db_changed = true;
     }
+
     void removeLecturer(LecturerModel lecturer) {
         lecturers.remove(lecturer);
         db_changed = true;
@@ -58,7 +66,10 @@ public class LecturerRepository {
         String[] data;
         while (sc.hasNextLine()) {
             line = sc.nextLine();
-            data = line.split(",(?=(?:[^\"]\"[^\"]\")[^\"]$)");
+            data = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+            for (int i = 0; i < data.length; i++) {
+                data[i] = data[i].replaceAll("^\"|\"$", ""); // Clean Quotes
+            }
             // Create initial Student
             lecturers.add(new LecturerModel(Integer.parseInt(data[0]), // Primary Key
                     data[1], // Hashed Password

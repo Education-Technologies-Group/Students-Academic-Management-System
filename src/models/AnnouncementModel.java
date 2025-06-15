@@ -1,44 +1,73 @@
 package models;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class AnnouncementModel {
-    private String announcement_title;
-    private String announcement_description;
+    private int id;
+    private int sender_id;
+    private String lecture_code; // For Sending to a Section
+    private String department; // For Sending to a Department
+    private String title;
+    private String description;
     private List<String> attachedFiles;
-    private String expirationDate;
-    private int announcement_id;
+    private LocalDateTime expirationDate;
 
-    public int getAnnouncement_id() {
-        return announcement_id;
-    }
-
-    public void setAnnouncement_id(int announcement_id) {
-        this.announcement_id = announcement_id;
-    }
-
-    public AnnouncementModel(int announcement_id, String announcement_description, String announcement_title,String expirationDate,List<String> attachedFiles) {
-        this.announcement_description = announcement_description;
-        this.announcement_title = announcement_title;
+    public AnnouncementModel(int id, int sender_id, String lecture, String department, String title, String description,
+                             List<String> attachedFiles, LocalDateTime expirationDate) {
+        this.id = id;
+        this.sender_id = sender_id;
+        this.lecture_code = lecture;
+        this.department = department;
+        this.title = title;
+        this.description = description;
         this.expirationDate = expirationDate;
         this.attachedFiles = attachedFiles;
-        this.announcement_id = announcement_id;
+    }
+    public int getID() {
+        return id;
     }
 
-    public String getAnnouncement_title() {
-        return announcement_title;
+    public void setID(int id) {
+        this.id = id;
+    }
+    public int getSenderId() {
+        return sender_id;
+    }
+    public void setSenderId(int sender_id) {
+        this.sender_id = sender_id;
     }
 
-    public void setAnnouncement_title(String announcement_title) {
-        this.announcement_title = announcement_title;
+    public String getLectureCode() {
+        return lecture_code;
     }
 
-    public String getAnnouncement_description() {
-        return announcement_description;
+    public void setLectureCode(String lecture_code) {
+        this.lecture_code = lecture_code;
     }
 
-    public void setAnnouncement_description(String announcement_description) {
-        this.announcement_description = announcement_description;
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public String geTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public List<String> getAttachedFiles() {
@@ -49,11 +78,11 @@ public class AnnouncementModel {
         this.attachedFiles = attachedFiles;
     }
 
-    public String getExpirationDate() {
+    public LocalDateTime getExpirationDate() {
         return expirationDate;
     }
 
-    public void setExpirationDate(String expirationDate) {
+    public void setExpirationDate(LocalDateTime expirationDate) {
         this.expirationDate = expirationDate;
     }
 }
