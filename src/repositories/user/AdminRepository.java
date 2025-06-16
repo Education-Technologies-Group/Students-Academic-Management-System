@@ -11,7 +11,7 @@ import java.util.*;
 import static repositories.user.UserRepository.last_pk;
 
 public class AdminRepository {
-    String DB_PATH = "data/students.csv";
+    String DB_PATH = "data/admins.csv";
     LinkedList<AdminModel> admins;
     private boolean db_changed = false;
 

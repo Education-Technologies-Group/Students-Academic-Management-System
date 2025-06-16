@@ -1,22 +1,20 @@
 package controllers;
-
 import models.TicketModel;
 import models.user.LecturerModel;
 import models.user.StudentModel;
 import services.TicketService;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 
 import static controllers.UserController.current_user;
 
 public class TicketController {
     private final TicketService ticketService;
-
     public TicketController(TicketService ticketService) {
         this.ticketService = ticketService;
     }
-
 
     public String createTicket(String title, String description) {
         if (title.isEmpty() || description.isEmpty()) {
@@ -42,6 +40,7 @@ public class TicketController {
     }
 
     public LinkedList<String> getTickets() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd - HH:mm");
         LinkedList<String> result = new LinkedList<>();
         LinkedList<TicketModel> tickets = ticketService.sendTickets(current_user);
         if (tickets == null) {
@@ -51,9 +50,9 @@ public class TicketController {
             result.add("=== Ticket Status ===\n" +
                     "Title       : " + ticket.getTitle() + "\n" +
                     "Description : " + ticket.getDescription() + "\n" +
-                    "Created On  : " + ticket.getCreation_date() + "\n" +
+                    "Created On  : " + ticket.getCreation_date().format(formatter) + "\n" +
                     "Status      : " +
-                    (ticket.getResolved_date() == null ? "Open" : "Resolved on " + ticket.getResolved_date()));
+                    (ticket.getResolved_date() == null ? "Open" : "Resolved on " + ticket.getResolved_date().format(formatter)));
         }
         return result;
     }
@@ -68,5 +67,4 @@ public class TicketController {
             return "Something went wrong...";
         }
     }
-
 }

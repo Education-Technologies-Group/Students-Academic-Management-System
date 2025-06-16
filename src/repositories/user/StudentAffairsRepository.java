@@ -50,6 +50,8 @@ public class StudentAffairsRepository {
     }
 
     public void addStudentAffair(StudentAffairsModel student) {
+        last_pk++;
+        student.setId(last_pk);
         student_affairs.add(student);
         db_changed = true;
     }
@@ -66,7 +68,10 @@ public class StudentAffairsRepository {
         String[] data;
         while (sc.hasNextLine()) {
             line = sc.nextLine();
-            data = line.split(",(?=(?:[^\"]\"[^\"]\")[^\"]$)");
+            data = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+            for (int i = 0; i < data.length; i++) {
+                data[i] = data[i].replaceAll("^\"|\"$", ""); // Clean Quotes
+            }
             // Create initial Student
             student_affairs.add(new StudentAffairsModel(Integer.parseInt(data[0]), // Primary Key
                     data[1], // Hashed Password
@@ -91,6 +96,7 @@ public class StudentAffairsRepository {
                 writer.write(student_affair.getHashedPassword() + ",");
                 writer.write(student_affair.getFullName() + ",");
                 writer.write(student_affair.getEmail() + ",");
+                writer.write(student_affair.getPhoneNumber() + ",");
                 writer.write(student_affair.getDepartment() + ",");
                 writer.write("\"" + student_affair.getIssuedTickets().stream() // Convert Linked List Into CSV Format
                         .map(String::valueOf)

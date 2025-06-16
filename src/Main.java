@@ -114,7 +114,7 @@ public class Main {
                     switch (user_input) {
                         case 1 -> handleUserCreation();
                         case 2 -> handleLectureCreation();
-                        case 5 -> logout();
+                        case 3 -> logout();
                         default -> System.out.println(" ❌ Invalid option try again ...");
                     }
                 }
@@ -244,7 +244,8 @@ public class Main {
         System.out.println("Please select the operation you want to perform.");
         System.out.println(" 1️⃣ Create User");
         System.out.println(" 2️⃣ Create Lecture");
-        System.out.println(" 2️⃣ Exit");
+        System.out.println(" 3️⃣ Exit");
+        System.out.print("-->");
     }
 
     // Student Menu Operations
@@ -503,7 +504,7 @@ public class Main {
     // StudentAffairs Menu Operations
     public static void handleTicketSolve() {
         System.out.print("Enter the ID of ticket you want to mark as solved: ");
-        int ticketID = Integer.parseInt(input.nextLine());
+        int ticketID = -1;
 
         try {
             ticketID = Integer.parseInt(input.nextLine());
@@ -532,9 +533,9 @@ public class Main {
         System.out.println("You can Skip any of the Inputs by Pressing Enter where applicable...");
 
         System.out.println("Pls Enter Which Type of User Do u Wanna Create: ");
-        System.out.println("   1️⃣  Student");
-        System.out.println("   2️⃣  Lecturer");
-        System.out.println("   3️⃣  StudentAffairs");
+        System.out.println("   1️⃣  Student \uD83C\uDF93");
+        System.out.println("   2️⃣  Lecturer \uD83D\uDC68\u200D\uD83C\uDFEB");
+        System.out.println("   3️⃣  StudentAffairs ");
         System.out.print("     --->");
 
         try {
@@ -683,9 +684,9 @@ public class Main {
 
     // Helpers
     public static void clearScreen() {
-        for (int i = 0; i < 50; i++) {
-            System.out.println(" ");
-        }
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
+
 
 }
