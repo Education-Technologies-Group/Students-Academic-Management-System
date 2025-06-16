@@ -1,6 +1,5 @@
 package repositories;
 
-import models.AnnouncementModel;
 import models.AssignmentModel;
 
 import java.io.File;
@@ -45,10 +44,13 @@ public class AssignmentRepository {
         return null;
     }
 
-    public LinkedList<AssignmentModel> getStudentAssignments(LinkedList<Integer> id_list) {
+    public LinkedList<AssignmentModel> getAssignmentsById(LinkedList<Integer> id_list) {
         LinkedList<AssignmentModel> result = new LinkedList<>();
         for (int id : id_list) {
-            result.add(getAssigmentById(id));
+            AssignmentModel assigment = getAssigmentById(id);
+            if (assigment != null) {
+                result.add(assigment);
+            }
         }
         return result;
     }

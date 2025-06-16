@@ -3,7 +3,6 @@ package services;
 import models.AssignmentModel;
 import models.user.LecturerModel;
 import models.user.StudentModel;
-import models.user.UserModel;
 import repositories.AssignmentRepository;
 import repositories.LectureRepository;
 import repositories.user.StudentRepository;
@@ -23,7 +22,7 @@ public class AssigmentService {
 
     public LinkedList<AssignmentModel> sendStudentAssignments(StudentModel student) {
         LinkedList<Integer> student_assignments = student.getAssignments();
-        return assigmentRepository.getStudentAssignments(student_assignments);
+        return assigmentRepository.getAssignmentsById(student_assignments);
     }
 
     public boolean createAssignment(AssignmentModel assignment) {

@@ -47,7 +47,9 @@ public class Main {
     static boolean user_interface_active = true;
 
     public static void main(String[] args) throws IOException {
+
         initializeSystem();
+        System.out.println("Welcome to SAMS !");
         while (user_interface_active) {
             switch (user_role) {
                 // Student Menu
@@ -179,7 +181,7 @@ public class Main {
 
     // User Menus
     public static void displayWelcomeScreen() {
-        System.out.println("Welcome to SAMS !");
+
         System.out.println("Please choose one of the following options:");
         System.out.println("1. Login");
         System.out.println("2. Exit");

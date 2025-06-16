@@ -77,7 +77,7 @@ public class LiveSessionRepository {
             line = sc.nextLine();
             data = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
             for (int i = 0; i < data.length; i++) {
-                data[i] = data[i].replaceAll("^\"|\"$", ""); // Clean Quotes
+                data[i] = data[i].replaceAll("\"", ""); // Clean Quotes
             }
             LiveSessionModel session = new LiveSessionModel(
                     Integer.parseInt(data[0]),            // ID
@@ -119,8 +119,7 @@ public class LiveSessionRepository {
                 writer.write(session.getRecord_path());
                 writer.write("\"" + session.getActiveParticipants().stream() // Convert Linked List Into CSV Format
                         .map(String::valueOf)
-                        .collect(Collectors.joining(",")) + "\n");
-                writer.write("\n");
+                        .collect(Collectors.joining(",")) + "\"\n");
             }
         } catch (IOException e) {
             System.out.println("Error while saving live sessions: " + e.getMessage());
