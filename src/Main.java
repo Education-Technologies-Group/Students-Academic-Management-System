@@ -49,7 +49,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         initializeSystem();
-        System.out.println("Welcome to SAMS !");
+        System.out.println("\uD83C\uDF8A Welcome to SAMS !");
         while (user_interface_active) {
             switch (user_role) {
                 // Student Menu
@@ -63,7 +63,9 @@ public class Main {
                         case 3 -> handeUserLiveSessionJoin();
                         case 4 -> displayStudentAssignments();
                         case 5 -> displayStudentAnnouncements();
-                        case 6 -> logout();
+                        case 6 -> displayTickets();
+                        case 7 -> handleTicketCreation();
+                        case 8 -> logout();
                     }
                 }
 
@@ -82,10 +84,8 @@ public class Main {
                         case 8 -> handleSessionCreation();
                         case 9 -> handleTicketCreation();
                         case 10 -> displayTickets();
-                        // case 11 -> ;
-                        // case 12 -> ;
-                        case 13 -> logout();
-                        default -> System.out.println("Invalid option try again ...");
+                        case 11 -> logout();
+                        default -> System.out.println(" ❌ Invalid option try again ...");
                     }
                 }
 
@@ -98,8 +98,9 @@ public class Main {
                         case 1 -> displayTickets();
                         case 2 -> handleTicketSolve();
                         case 3 -> handleAddAnnouncement();
-                        case 4 -> logout();
-                        default -> System.out.println("Invalid option try again ...");
+                        case 4 -> handeDeleteAnnouncement();
+                        case 5 -> logout();
+                        default -> System.out.println(" ❌ Invalid option try again ...");
                     }
                 }
 
@@ -115,7 +116,7 @@ public class Main {
                         case "1" -> login();
                         case "2" -> logout();
                         default -> {
-                            System.out.println("Invalid option try again ...");
+                            System.out.println(" ❌ Invalid option try again ...");
                             System.out.print("--> :");
                         }
                     }
@@ -159,9 +160,9 @@ public class Main {
 
     // Auth
     public static void login() {
-        System.out.print("Please enter your email :");
+        System.out.print("\n📧 Please enter your email : ");
         String email = input.nextLine();
-        System.out.print("Please enter your password :");
+        System.out.print("\n🔒 Please enter your password : ");
         String password = input.nextLine();
         String response = userController.login(email, password);
         switch (response) {
@@ -175,45 +176,44 @@ public class Main {
 
     public static void logout() {
         user_interface_active = false;
-        System.out.println("Successfully logged out from SAMS ...");
+        System.out.println("\uD83D\uDD1A Successfully logged out from SAMS ...");
         System.out.println("Goodbye!");
     }
 
     // User Menus
     public static void displayWelcomeScreen() {
-
         System.out.println("Please choose one of the following options:");
-        System.out.println("1. Login");
-        System.out.println("2. Exit");
+        System.out.println("   1️⃣  Login");
+        System.out.println("   2️⃣  Exit ");
         System.out.print("--> :");
     }
 
     public static void displayStudentMenu() {
         System.out.println("Please select the operation you want to perform.");
-        System.out.println("1. View Lectures");
-        System.out.println("2. View Grades");
-        System.out.println("3. Join live session");
-        System.out.println("4. View Assignments");
-        System.out.println("5. View Announcements");
-        System.out.println("6. Exit");
+        System.out.println("   1️⃣  View Lectures");
+        System.out.println("   2️⃣  View Grades");
+        System.out.println("   3️⃣  Join Live Session");
+        System.out.println("   4️⃣  View Assignments");
+        System.out.println("   5️⃣  View Announcements");
+        System.out.println("   6️⃣  View Tickets");
+        System.out.println("   7️⃣  Add Ticket");
+        System.out.println("   8️⃣  Exit");
         System.out.print("--> :");
     }
 
     public static void displayLecturerMenu() {
         System.out.println("Please select the operation you want to perform.");
-        System.out.println("1.Display Sent Announcements");
-        System.out.println("2.Add Announcement");
-        System.out.println("3.Delete Announcement");
-        System.out.println("4.Display Given Assignments");
-        System.out.println("5.Add Assignment");
-        System.out.println("6.Delete Assignment");
-        System.out.println("7.Edit Grades");
-        System.out.println("8.Open Live Session");
-        System.out.println("9.Create Ticket");
-        System.out.println("10.View Tickets");
-        System.out.println("11.Edit Assignment");
-        System.out.println("12.Edit Announcement");
-        System.out.println("13.Exit");
+        System.out.println(" 1️⃣  Display Sent Announcements");
+        System.out.println(" 2️⃣  Add Announcement");
+        System.out.println(" 3️⃣  Delete Announcement");
+        System.out.println(" 4️⃣  Display Given Assignments");
+        System.out.println(" 5️⃣  Add Assignment");
+        System.out.println(" 6️⃣  Delete Assignment");
+        System.out.println(" 7️⃣  Edit Grades");
+        System.out.println(" 8️⃣  Open Live Session");
+        System.out.println(" 9️⃣  Create Ticket");
+        System.out.println(" 🔟  View Tickets");
+        System.out.println("1️⃣1️⃣  Exit");
         System.out.print("-->");
 
 
@@ -221,23 +221,24 @@ public class Main {
 
     public static void displayStudentAffairsMenu() {
         System.out.println("Please select the operation you want to perform.");
-        System.out.println("1.Ticket Requests");
-        System.out.println("2.Mark Ticket as Solved");
-        System.out.println("3.Add Announcement");
-        System.out.println("4.Exit");
+        System.out.println(" 1️⃣  Ticket Requests");
+        System.out.println(" 2️⃣  Mark Ticket as Solved");
+        System.out.println(" 3️⃣  Add Announcement");
+        System.out.println(" 4️⃣  Delete Announcement");
+        System.out.println(" 5️⃣  Exit");
         System.out.print("-->");
     }
 
     public static void displayAdminMenu() {
         System.out.println("Please select the operation you want to perform.");
-        System.out.println("1. Create User");
-        System.out.println("2. Create Lecture");
-        System.out.println("3. Create User");
+        System.out.println(" 1️⃣ Create User");
+        System.out.println(" 2️⃣ Create Lecture");
+        System.out.println(" 3️⃣ Create User");
     }
 
     // Student Menu Operations
     public static void displayStudentLecturers() {
-        System.out.println(" Your Lectures: ");
+        System.out.println("\uD83D\uDCDA Your Lectures: ");
         LinkedList<String> lecture_lines = lectureController.getStudentLectures();
         for (String lecture : lecture_lines) {
             System.out.println(lecture);
@@ -245,7 +246,7 @@ public class Main {
     }
 
     public static void displayStudentGrades() {
-        System.out.println(" Your Grades: ");
+        System.out.println("\uD83D\uDCCA Your Grades: ");
         LinkedList<String> grade_lines = lectureController.getStudentLectureGrades();
         for (String grade : grade_lines) {
             System.out.println(grade);
@@ -258,18 +259,19 @@ public class Main {
         for (String session : sessions) {
             System.out.println(session);
         }
-        System.out.print("Pls Enter a Live session ID to Join: ");
+        System.out.print("\uD83C\uDFA5 Pls Enter a Live session ID to Join: ");
         int sessionID = Integer.parseInt(input.nextLine());
         if (liveSessionController.joinSession(sessionID)) {
-            System.out.println("Successfully Joined Live Session");
+            System.out.println("✅ Successfully Joined Live Session");
         } else {
-            System.out.println("Failed To Join Live Session");
+            System.out.println("Failed To Join Live Session ❌");
         }
 
     }
 
     public static void displayStudentAssignments() {
         LinkedList<String> assignments = assignmentController.sendStudentAssignments();
+        System.out.println("\uD83D\uDCD6 Your Assignments: ");
         for (String assignment : assignments) {
             System.out.println(assignment);
         }
@@ -278,6 +280,7 @@ public class Main {
 
     public static void displayStudentAnnouncements() {
         LinkedList<String> announcements = announcementController.sendStudentAnnouncements();
+        System.out.println("\uD83D\uDCE2 Your Announcements: ");
         for (String announcement : announcements) {
             System.out.println(announcement);
         }
@@ -349,7 +352,7 @@ public class Main {
         );
 
         if (response.equals("Success")) {
-            System.out.println("Assignment created successfully!");
+            System.out.println("✅ Assignment created successfully!");
         } else {
             System.out.println("Error: " + response);
         }
@@ -366,7 +369,7 @@ public class Main {
         }
         String response = assignmentController.deleteAssignment(assignemntID);
         if (response.equals("Success")) {
-            System.out.println("Assignment deleted successfully!");
+            System.out.println("✅ Assignment deleted successfully!");
         } else {
             System.out.println("Error: " + response);
         }
@@ -401,7 +404,7 @@ public class Main {
         }
         String response = userController.updateGrade(studentID, lessonCode, new_grade);
         if (response.equals("Success")) {
-            System.out.println("Grade updated successfully!");
+            System.out.println("✅ Grade updated successfully!");
         } else {
             System.out.println("Error: " + response);
         }
@@ -437,7 +440,7 @@ public class Main {
                 , recordPath, target_lecture);
 
         if (response.equals("Success")) {
-            System.out.println("Live session created successfully!");
+            System.out.println("✅ Live session created successfully!");
         } else {
             System.out.println("Error: " + response);
         }
@@ -446,6 +449,7 @@ public class Main {
 
     public static void displayTickets() {
         LinkedList<String> tickets = ticketController.getTickets();
+        System.out.println("\uD83C\uDFAB Tickets:");
         if (tickets == null) {
             System.out.println("Something went wrong...");
             return;
@@ -477,7 +481,7 @@ public class Main {
 
         // Response handling
         if (response.equals("Success")) {
-            System.out.println("Ticket created successfully!");
+            System.out.println("\uD83C\uDFAB Ticket created successfully!");
         } else {
             System.out.println("Error: " + response);
         }
