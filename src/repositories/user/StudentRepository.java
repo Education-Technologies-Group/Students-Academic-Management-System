@@ -74,6 +74,15 @@ public class StudentRepository {
         return selected_students;
     }
 
+    public LinkedList<Integer> getTicketsByID(int id) {
+        for (StudentModel student : students) {
+            if  (student.getId() == id) {
+                return student.getTickets();
+            }
+        }
+        return null;
+    }
+
     // Edit Operations
     public void addStudent(StudentModel student) {
         student.setId(last_pk);
@@ -168,5 +177,4 @@ public class StudentRepository {
             System.out.println("An Error Occurred While Saving Changes to the Database");
         }
     }
-
 }

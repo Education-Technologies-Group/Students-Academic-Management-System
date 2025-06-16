@@ -39,10 +39,20 @@ public class TicketRepository {
         }
         return result;
     }
+    public LinkedList<TicketModel> getTicketsByDepartment(String department) {
+        LinkedList<TicketModel> result = new LinkedList<>();
+        for (TicketModel ticket : tickets) {
+            if (ticket.getDepartment().equals(department)) {
+                result.add(ticket);
+            }
+        }
+        return result;
+    }
 
-    public void addTicket(TicketModel ticket) {
+    public boolean addTicket(TicketModel ticket) {
         tickets.add(ticket);
         db_changed = true;
+        return true;
     }
 
     public void removeTicket(TicketModel ticket) {
@@ -62,15 +72,19 @@ public class TicketRepository {
         Scanner sc = new Scanner(file);
         while (sc.hasNextLine()) {
             String line = sc.nextLine();
-            String[] data = line.split(",", -1); // boş alanları da al
+            String[] data = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+            for (int i = 0; i < data.length; i++) {
+                data[i] = data[i].replaceAll("^\"|\"$", ""); // Clean Quotes
+            }
             TicketModel ticket = new TicketModel(
                     Integer.parseInt(data[0]),             // id
                     Integer.parseInt(data[1]),             // ownerId
                     data[2],                               // ownerRole
-                    LocalDateTime.parse(data[3]),          // creation_date
-                    data[4],                               // title
-                    data[5],                               // description
-                    data[6].isEmpty() ? null : LocalDateTime.parse(data[6]) // resolved_date
+                    data[3],                               // Department
+                    LocalDateTime.parse(data[4]),          // creation_date
+                    data[5],                               // title
+                    data[6],                               // description
+                    data[7].isEmpty() ? null : LocalDateTime.parse(data[6]) // resolved_date
             );
             tickets.add(ticket);
         }
@@ -84,6 +98,7 @@ public class TicketRepository {
                 writer.write(ticket.getId() + ",");
                 writer.write(ticket.getOwnerId() + ",");
                 writer.write(ticket.getOwnerRole() + ",");
+                writer.write(ticket.getDepartment() + ",");
                 writer.write(ticket.getCreation_date().toString() + ",");
                 writer.write(ticket.getTitle() + ",");
                 writer.write(ticket.getDescription() + ",");
@@ -94,4 +109,5 @@ public class TicketRepository {
             System.out.println("Error while saving tickets: " + e.getMessage());
         }
     }
+
 }

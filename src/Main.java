@@ -1,9 +1,8 @@
 
 import controllers.*;
-import repositories.AnnouncementRepository;
-import repositories.AssignmentRepository;
-import repositories.LectureRepository;
-import repositories.LiveSessionRepository;
+import models.TicketModel;
+import models.user.UserModel;
+import repositories.*;
 import repositories.user.LecturerRepository;
 import repositories.user.StudentAffairsRepository;
 import repositories.user.StudentRepository;
@@ -21,6 +20,7 @@ public class Main {
     public static LiveSessionController liveSessionController;
     public static AssignmentController assignmentController;
     public static AnnouncementController announcementController;
+    public static TicketController ticketController;
 
     // Services
     public static UserService userService;
@@ -28,6 +28,7 @@ public class Main {
     public static LiveSessionService liveSessionService;
     public static AssigmentService assigmentService;
     public static AnnouncementService announcementService;
+    public static TicketService ticketService;
 
     // Repos
     public static StudentRepository studentRepository;
@@ -38,38 +39,16 @@ public class Main {
     public static LiveSessionRepository liveSessionRepository;
     public static AssignmentRepository assignmentRepository;
     public static AnnouncementRepository announcementRepository;
+    public static TicketRepository ticketRepository;
 
 
     static Scanner input = new Scanner(System.in);
     static String user_role = "None";
     static boolean user_interface_active = true;
-    static boolean backpagevaild;
-    static int backpage;
 
     public static void main(String[] args) throws IOException {
         initializeSystem();
-        displayWelcomeScreen();
         while (user_interface_active) {
-            String auth_selection = input.nextLine();
-            // User Selected Login
-            if (auth_selection.equals("1")) {
-                String response = login();
-                switch (response) {
-                    case "Student" -> user_role = "Student";
-                    case "Lecturer" -> user_role = "Lecturer";
-                    case "StudentAffairs" -> user_role = "StudentAffairs";
-                    case "Admin" -> user_role = "Admin";
-                    default -> user_role = "None";
-                }
-            } else if (auth_selection.equals("2")) {
-                user_interface_active = false;
-                logout();
-                break;
-            } else {
-                System.out.println("Invalid option try again ...");
-                System.out.print("--> :");
-                continue;
-            }
             switch (user_role) {
                 // Student Menu
                 case "Student" -> {
@@ -77,25 +56,12 @@ public class Main {
                     int user_input = Integer.parseInt(input.nextLine());
 
                     switch (user_input) {
-                        case 1 -> {
-                            displayStudentLecturers();
-                        }
-                        case 2 -> {
-                            displayStudentGrades();
-                        }
-                        case 3 -> {
-                            handeUserLiveSessionJoin();
-                        }
-                        case 4 -> {
-                            displayStudentAssignments();
-                        }
-                        case 5 -> {
-                            displayStudentAnnouncements();
-                        }
-                        case 6 -> {
-                            user_interface_active = false;
-                            logout();
-                        }
+                        case 1 -> displayStudentLecturers();
+                        case 2 -> displayStudentGrades();
+                        case 3 -> handeUserLiveSessionJoin();
+                        case 4 -> displayStudentAssignments();
+                        case 5 -> displayStudentAnnouncements();
+                        case 6 -> logout();
                     }
                 }
 
@@ -110,35 +76,13 @@ public class Main {
                         case 4 -> handleDisplayLectureAssignments();
                         case 5 -> handleAddAssignment();
                         case 6 -> handleDeleteAssignment();
-                        case 7 -> {
-                            System.out.println("Live session opened successfully ...:");
-                            //LECTURER CONTROLLER
-                            turnback_or_exit_screen();
-                            turnback_or_exit_ProcessforLecturer();
-                        }
-                        case 8 -> {
-                            System.out.println("Your Tickets :");
-                            turnback_or_exit_screen();
-                            turnback_or_exit_ProcessforLecturer();
-                        }
-                        case 9 -> {
-                            System.out.println("Assignment edited successfully ...:");
-                            //Assignment service de yazıldı title ve due date editleme
-                            //LECTURE CONTROLLER
-                            turnback_or_exit_screen();
-                            turnback_or_exit_ProcessforLecturer();
-                        }
-                        case 10 -> {
-                            System.out.println("Announcement edited successfully ...:");
-                            //Announcement service de yazılı
-                            //LECTURE CONTROLLER
-                            turnback_or_exit_screen();
-                            turnback_or_exit_ProcessforLecturer();
-                        }
-                        case 11 -> {
-                            user_interface_active = false;
-                            logout();
-                        }
+                        case 7 -> handleEditGrades();
+                        case 8 -> handleSessionCreation();
+                        case 9 -> handleTicketCreation();
+                        case 10 -> displayTickets();
+                        // case 11 -> ;
+                        // case 12 -> ;
+                        case 13 -> logout();
                         default -> System.out.println("Invalid option try again ...");
                     }
                 }
@@ -149,21 +93,11 @@ public class Main {
                     displayStudentAffairsMenu();
                     int user_input = Integer.parseInt(input.nextLine());
                     switch (user_input) {
-                        case 1:
-                            System.out.println("Ticket requests are answered successfully ...:");
-                            //S.AFFAİRS CONTROLLER
-                            turnback_or_exit_screen();
-                            turnback_or_exit_ProcessforStudentaffairs();
-                            break;
-                        case 2:
-                            System.out.println("Announcement added successfully ...:");
-                            //S.AFFAİRS CONTROLLER
-                            turnback_or_exit_screen();
-                            turnback_or_exit_ProcessforStudentaffairs();
-                            break;
-                        default:
-                            System.out.println("Invalid option try again ...");
-                            break;
+                        case 1 -> displayTickets();
+                        case 2 -> handleTicketSolve();
+                        case 3 -> handleAddAnnouncement();
+                        case 4 -> logout();
+                        default -> System.out.println("Invalid option try again ...");
                     }
                 }
 
@@ -171,12 +105,25 @@ public class Main {
                 case "Admin" -> displayAdminMenu();
 
                 // No User Currently Logged In
-                default -> displayWelcomeScreen();
+                default -> {
+                    displayWelcomeScreen();
+                    String auth_selection = input.nextLine();
+                    // User Selected Login
+                    switch (auth_selection) {
+                        case "1" -> login();
+                        case "2" -> logout();
+                        default -> {
+                            System.out.println("Invalid option try again ...");
+                            System.out.print("--> :");
+                        }
+                    }
+                }
             }
 
 
         }
     }
+
 
     // System
     public static void initializeSystem() throws IOException {
@@ -189,32 +136,43 @@ public class Main {
         liveSessionRepository = new LiveSessionRepository();
         assignmentRepository = new AssignmentRepository();
         announcementRepository = new AnnouncementRepository();
+        ticketRepository = new TicketRepository();
 
         // Initialize Services
-        userService = new UserService(studentRepository, lecturerRepository, studentAffairsRepository);
+        userService = new UserService(studentRepository, lecturerRepository, studentAffairsRepository, lectureRepository);
         lectureService = new LectureService(lecturerRepository, lectureRepository);
         liveSessionService = new LiveSessionService(liveSessionRepository, lectureRepository, studentRepository);
         assigmentService = new AssigmentService(assignmentRepository, lectureRepository, studentRepository);
         announcementService = new AnnouncementService(announcementRepository, lectureRepository);
+        ticketService = new TicketService(ticketRepository);
 
         // Initialize Controllers
-        userController = new UserController(userService);
+        userController = new UserController(userService, lectureService);
         lectureController = new LectureController(lectureService);
-        liveSessionController = new LiveSessionController(liveSessionService);
+        liveSessionController = new LiveSessionController(liveSessionService, lectureService);
         assignmentController = new AssignmentController(assigmentService, lectureService);
         announcementController = new AnnouncementController(announcementService, lectureService);
+        ticketController = new TicketController(ticketService);
     }
 
     // Auth
-    public static String login() {
+    public static void login() {
         System.out.print("Please enter your email :");
         String email = input.nextLine();
         System.out.print("Please enter your password :");
         String password = input.nextLine();
-        return userController.login(email, password); // Send Response Back
+        String response = userController.login(email, password);
+        switch (response) {
+            case "Student" -> user_role = "Student";
+            case "Lecturer" -> user_role = "Lecturer";
+            case "StudentAffairs" -> user_role = "StudentAffairs";
+            case "Admin" -> user_role = "Admin";
+            default -> user_role = "None";
+        }
     }
 
     public static void logout() {
+        user_interface_active = false;
         System.out.println("Successfully logged out from SAMS ...");
         System.out.println("Goodbye!");
     }
@@ -249,10 +207,11 @@ public class Main {
         System.out.println("6.Delete Assignment");
         System.out.println("7.Edit Grades");
         System.out.println("8.Open Live Session");
-        System.out.println("9.View Tickets");
-        System.out.println("10.Edit Assignment");
-        System.out.println("11.Edit Announcement");
-        System.out.println("12.Exit");
+        System.out.println("9.Create Ticket");
+        System.out.println("10.View Tickets");
+        System.out.println("11.Edit Assignment");
+        System.out.println("12.Edit Announcement");
+        System.out.println("13.Exit");
         System.out.print("-->");
 
 
@@ -261,13 +220,17 @@ public class Main {
     public static void displayStudentAffairsMenu() {
         System.out.println("Please select the operation you want to perform.");
         System.out.println("1.Ticket Requests");
-        System.out.println("2.Add Announcement");
+        System.out.println("2.Mark Ticket as Solved");
+        System.out.println("3.Add Announcement");
+        System.out.println("4.Exit");
+        System.out.print("-->");
     }
 
     public static void displayAdminMenu() {
         System.out.println("Please select the operation you want to perform.");
         System.out.println("1. Create User");
-        System.out.println("2. Update User");
+        System.out.println("2. Create Lecture");
+        System.out.println("3. Create User");
     }
 
     // Student Menu Operations
@@ -325,70 +288,6 @@ public class Main {
             System.out.println(announcement);
         }
 
-    }
-
-    public static void handleAddAnnouncement() {
-        // Necessary Inputs for Creating Announcement
-        String lectureCode;
-        String department;
-        String title;
-        String description;
-        LinkedList<String> attachedFiles;
-        String expirationDate;
-        System.out.println("You can Skip any of the Inputs by Pressing Enter...");
-
-        System.out.print("Enter lecture code which will be target: ");
-        lectureCode = input.nextLine().trim();
-
-        System.out.print("Enter department name which will be target: ");
-        department = input.nextLine().trim();
-
-        System.out.print("Enter title: ");
-        title = input.nextLine();
-
-        System.out.print("Enter description: ");
-        description = input.nextLine();
-
-        System.out.print("Enter number of attached files: ");
-        int fileCount = 0;
-        try {
-            fileCount = Integer.parseInt(input.nextLine());
-        } catch (NumberFormatException e) {
-            System.out.println("Please enter a valid number...");
-        }
-        attachedFiles = new LinkedList<>();
-        for (int i = 0; i < fileCount; i++) {
-            System.out.print("Enter file path " + (i + 1) + ": ");
-            attachedFiles.add(input.nextLine());
-        }
-
-        System.out.print("Enter Expiration Date and Time (eg. '2025-12-23 21:00'): ");
-        expirationDate = input.nextLine().trim();
-
-        String response = announcementController.createAnnouncement(lectureCode, department, title, description, attachedFiles, expirationDate);
-        // Now the `announcement` object is fully populated from user input.
-        if (response.equals("Success")) {
-            System.out.println("Announcement created successfully!");
-        } else {
-            System.out.println("Error: " + response);
-        }
-    }
-
-    public static void handeDeleteAnnouncement() {
-        displaySentAnnouncements();
-        System.out.print("Pls enter the ID of the announcement you want to delete: ");
-        int announcementID = -1;
-        try {
-            announcementID = Integer.parseInt(input.nextLine());
-        } catch (NumberFormatException e) {
-            System.out.println("Please enter a valid ID...");
-        }
-        String response = announcementController.deleteAnnouncement(announcementID);
-        if (response.equals("Success")) {
-            System.out.println("Announcement deleted successfully!");
-        } else {
-            System.out.println("Error: " + response);
-        }
     }
 
     public static void handleDisplayLectureAssignments() {
@@ -471,78 +370,205 @@ public class Main {
         }
     }
 
+    public static void handleEditGrades() {
+        System.out.print("Enter the student ID you want to update the grade for: ");
+        int studentID = -1;
+        try {
+            studentID = Integer.parseInt(input.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Please enter a valid Student ID...");
+        }
+        LinkedList<String> lecturer_grades = userController.getStudentGradesByLecturer(studentID);
+        if (lecturer_grades == null) {
+            System.out.println("Student not Found...");
+            return;
+        }
+        if (lecturer_grades.isEmpty()) {
+            System.out.println("You don't have any grades to update related to this student...");
+        }
+        for (String lecturer_grade : lecturer_grades) {
+            System.out.println(lecturer_grade);
+        }
+        System.out.print("Enter the Lesson Code you want to update the grade for: ");
+        String lessonCode = input.nextLine().trim();
+        int new_grade = -1;
+        try {
+            new_grade = Integer.parseInt(input.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Please enter a valid Student ID...");
+        }
+        String response = userController.updateGrade(studentID, lessonCode, new_grade);
+        if (response.equals("Success")) {
+            System.out.println("Grade updated successfully!");
+        } else {
+            System.out.println("Error: " + response);
+        }
+    }
+
+    public static void handleSessionCreation() {
+        // Necessary Inputs for Creating Live Session
+        String title;
+        String description;
+        String scheduledDate;
+        String recordPath;
+        String target_lecture;
+
+        System.out.println("You can Skip any of the Inputs by Pressing Enter where applicable...");
+
+        System.out.print("Enter title: ");
+        title = input.nextLine();
+
+        System.out.print("Enter description: ");
+        description = input.nextLine();
+
+        System.out.print("Enter scheduled date and time (e.g., '2025-06-20 18:30'): ");
+        scheduledDate = input.nextLine().trim();
+
+        System.out.print("Enter record file path (or leave blank if none): ");
+        recordPath = input.nextLine().trim();
+
+        System.out.print("Enter target lecture code to invite students: ");
+        target_lecture = input.nextLine().trim();
+
+
+        String response = liveSessionController.createLiveSession(title, description, scheduledDate
+                , recordPath, target_lecture);
+
+        if (response.equals("Success")) {
+            System.out.println("Live session created successfully!");
+        } else {
+            System.out.println("Error: " + response);
+        }
+
+    }
+
+    public static void displayTickets() {
+        LinkedList<String> tickets = ticketController.getTickets();
+        if (tickets == null) {
+            System.out.println("Something went wrong...");
+            return;
+        }
+        if (tickets.isEmpty()) {
+            System.out.println("You don't have any tickets ...");
+        }
+        for (String ticket : tickets) {
+            System.out.println(ticket);
+        }
+    }
+
+    public static void handleTicketCreation() {
+        // Necessary Inputs for Creating Ticket
+        String title;
+        String description;
+
+        System.out.println("You can Skip any of the Inputs by Pressing Enter where applicable...");
+
+
+        System.out.print("Enter title: ");
+        title = input.nextLine();
+
+        System.out.print("Enter description: ");
+        description = input.nextLine();
+
+
+        String response = ticketController.createTicket(title, description);
+
+        // Response handling
+        if (response.equals("Success")) {
+            System.out.println("Ticket created successfully!");
+        } else {
+            System.out.println("Error: " + response);
+        }
+
+
+    }
+
+    // StudentAffairs Menu Operations
+    public static void handleTicketSolve() {
+        System.out.print("Enter the ID of ticket you want to mark as solved: ");
+        int  ticketID = Integer.parseInt(input.nextLine());
+
+        try {
+            ticketID = Integer.parseInt(input.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Please enter a valid ID...");
+        }
+        String response = ticketController.markTicketSolved(ticketID);
+        if (response.equals("Success")) {
+            System.out.println("Ticket Marked as Solved successfully!");
+        } else {
+            System.out.println("Error: " + response);
+        }
+    }
+
+
+    // Lecturer & Student Affairs Common Operation
+    public static void handleAddAnnouncement() {
+        // Necessary Inputs for Creating Announcement
+        String lectureCode;
+        String department;
+        String title;
+        String description;
+        LinkedList<String> attachedFiles;
+        String expirationDate;
+        System.out.println("You can Skip any of the Inputs by Pressing Enter...");
+
+        System.out.print("Enter lecture code which will be target: ");
+        lectureCode = input.nextLine().trim();
+
+        System.out.print("Enter department name which will be target: ");
+        department = input.nextLine().trim();
+
+        System.out.print("Enter title: ");
+        title = input.nextLine();
+
+        System.out.print("Enter description: ");
+        description = input.nextLine();
+
+        System.out.print("Enter number of attached files: ");
+        int fileCount = 0;
+        try {
+            fileCount = Integer.parseInt(input.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Please enter a valid number...");
+        }
+        attachedFiles = new LinkedList<>();
+        for (int i = 0; i < fileCount; i++) {
+            System.out.print("Enter file path " + (i + 1) + ": ");
+            attachedFiles.add(input.nextLine());
+        }
+
+        System.out.print("Enter Expiration Date and Time (eg. '2025-12-23 21:00'): ");
+        expirationDate = input.nextLine().trim();
+
+        String response = announcementController.createAnnouncement(lectureCode, department, title, description, attachedFiles, expirationDate);
+
+        if (response.equals("Success")) {
+            System.out.println("Announcement created successfully!");
+        } else {
+            System.out.println("Error: " + response);
+        }
+    }
+
+    public static void handeDeleteAnnouncement() {
+        displaySentAnnouncements();
+        System.out.print("Pls enter the ID of the announcement you want to delete: ");
+        int announcementID = -1;
+        try {
+            announcementID = Integer.parseInt(input.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Please enter a valid ID...");
+        }
+        String response = announcementController.deleteAnnouncement(announcementID);
+        if (response.equals("Success")) {
+            System.out.println("Announcement deleted successfully!");
+        } else {
+            System.out.println("Error: " + response);
+        }
+    }
+
+
     // Helpers
-
-    public static void turnback_or_exit_screen() {
-        System.out.println("Do you want to turn back page or exit the system ?");
-        System.out.println("1.Turn back");
-        System.out.println("2.Exit");
-        System.out.print("--> :");
-    }
-
-    public static void turnback_Or_exit_Process() {
-        backpage = Integer.parseInt(input.nextLine());
-        if (0 < backpage && backpage < 3) {
-
-        } else {
-            while (!backpagevaild) {
-                System.out.print("Please enter a valid option:");
-                backpage = Integer.parseInt(input.nextLine());
-                if (0 < backpage && backpage < 3) {
-                    backpagevaild = true;
-                }
-            }
-        }
-        if (backpage == 1) {// turn back
-            displayStudentMenu();
-        } else if (backpage == 2) {
-            user_interface_active = true;
-            logout();
-        }
-    }
-
-    public static void turnback_or_exit_ProcessforLecturer() {
-        backpage = Integer.parseInt(input.nextLine());
-        if (0 < backpage && backpage < 3) {
-
-        } else {
-            while (!backpagevaild) {
-                System.out.print("Please enter a valid option:");
-                backpage = Integer.parseInt(input.nextLine());
-                if (0 < backpage && backpage < 3) {
-                    backpagevaild = true;
-                }
-            }
-        }
-        if (backpage == 1) {// turn back
-            displayLecturerMenu();
-        } else if (backpage == 2) {
-            user_interface_active = true;
-            logout();
-        }
-    }
-
-    public static void turnback_or_exit_ProcessforStudentaffairs() {
-        backpage = Integer.parseInt(input.nextLine());
-        if (0 < backpage && backpage < 3) {
-
-        } else {
-            while (!backpagevaild) {
-                System.out.print("Please enter a valid option:");
-                backpage = Integer.parseInt(input.nextLine());
-                if (0 < backpage && backpage < 3) {
-                    backpagevaild = true;
-                }
-            }
-        }
-        if (backpage == 1) {// turn back
-            displayStudentMenu();
-        } else if (backpage == 2) {
-            user_interface_active = true;
-            logout();
-        }
-    }
-
     public static void clearScreen() {
         for (int i = 0; i < 50; i++) {
             System.out.println(" ");

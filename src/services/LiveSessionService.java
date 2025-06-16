@@ -7,7 +7,6 @@ import models.user.UserModel;
 import repositories.LectureRepository;
 import repositories.LiveSessionRepository;
 import repositories.user.StudentRepository;
-import repositories.user.UserRepository;
 
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
@@ -51,8 +50,14 @@ public class LiveSessionService {
         }
     }
 
-    public void createNewSession(LiveSessionModel live_session) {
+    public boolean createNewSession(LiveSessionModel live_session, String lesson_code) {
+        LectureModel lecture = lectureRepository.getLectureByCode(lesson_code);
+        LinkedList<StudentModel> invited_students = studentRepository.getStudentsByLecture(lecture.getId());
+        for (StudentModel student : invited_students) {
+            live_session.getInvitedParticipants().add(student.getId());
+        }
         liveSessionRepository.addSession(live_session);
+        return true;
     }
 
     public void recordSession(LiveSessionModel session) {
