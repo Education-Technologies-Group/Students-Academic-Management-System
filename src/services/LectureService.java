@@ -37,4 +37,8 @@ public class LectureService {
         return lectureRepository.getLectureById(lecture_id).getSyllabus();
     }
 
+    public boolean saveLecture(LectureModel lecture) {
+        lectureRepository.addLecture(lecture);
+        return true;
+    }
 }

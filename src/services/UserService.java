@@ -1,13 +1,12 @@
 package services;
 
 import models.LectureModel;
-import models.TicketModel;
 import models.user.LecturerModel;
 import models.user.StudentAffairsModel;
 import models.user.StudentModel;
 import models.user.UserModel;
 import repositories.LectureRepository;
-import repositories.TicketRepository;
+import repositories.user.AdminRepository;
 import repositories.user.LecturerRepository;
 import repositories.user.StudentAffairsRepository;
 import repositories.user.StudentRepository;
@@ -25,24 +24,25 @@ public class UserService {
     private final StudentRepository studentRepository;
     private final LecturerRepository lecturerRepository;
     private final StudentAffairsRepository studentAffairsRepository;
+    private final AdminRepository adminRepository;
     private final LectureRepository lectureRepository;
     private final String SALT = "Onion";
 
-    public UserService(StudentRepository studentRepository, LecturerRepository lecturerRepository, StudentAffairsRepository studentAffairsRepository, LectureRepository lectureRepository) throws FileNotFoundException {
+    public UserService(StudentRepository studentRepository, LecturerRepository lecturerRepository, StudentAffairsRepository studentAffairsRepository, AdminRepository adminRepository, LectureRepository lectureRepository) throws FileNotFoundException {
         this.studentRepository = studentRepository;
         this.lecturerRepository = lecturerRepository;
         this.studentAffairsRepository = studentAffairsRepository;
+        this.adminRepository = adminRepository;
 
         this.lectureRepository = lectureRepository;
     }
 
     // Auth
-    public UserModel register(UserModel user) {
+    public boolean register(UserModel user) {
         if (!(studentRepository.getUserByEmail(user.getEmail()) == null &&
                 lecturerRepository.getUserByEmail(user.getEmail()) == null &&
                 studentAffairsRepository.getUserByEmail(user.getEmail()) == null)) {
-            System.out.println("User already exists");
-            return null;
+            return false;
         }
         user.setHashedPassword(HashCreator.createSHAHash(user.getHashedPassword() + SALT));
         if (user instanceof StudentModel) {
@@ -52,7 +52,7 @@ public class UserService {
         } else if (user instanceof StudentAffairsModel) {
             studentAffairsRepository.addStudentAffair((StudentAffairsModel) user);
         }
-        return user;
+        return true;
     }
 
     public UserModel login(String email, String password) {
@@ -64,6 +64,9 @@ public class UserService {
         if (user == null) {
             user = studentAffairsRepository.getUserByEmail(email);
         }
+        if (user == null) {
+            user = adminRepository.getUserByEmail(email);
+        }
         if (user == null) { // User Not Found
             return null;
         }
@@ -74,7 +77,10 @@ public class UserService {
         return user;
     }
 
-    public boolean checkStudentExistence(int student_id) {
+    public boolean checkStudentExistenceByID(int student_id) {
+        return studentRepository.getStudentByStudentID(student_id) != null;
+    }
+    public boolean checkStudentExistenceByStudentID(int student_id) {
         return studentRepository.getStudentByStudentID(student_id) != null;
     }
     public LinkedList<String> sendStudentGradesByLecturer(LecturerModel lecturer, int student_id){
@@ -106,6 +112,10 @@ public class UserService {
             index++;
         }
         return true;
+    }
+
+    public boolean checkLecturerExistenceByID(int lecturer_id) {
+        return lecturerRepository.getUserByID(lecturer_id) != null;
     }
 
     public static class HashCreator {

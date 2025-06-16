@@ -1,16 +1,13 @@
 package controllers;
 
-import models.TicketModel;
-import models.user.LecturerModel;
-import models.user.StudentAffairsModel;
-import models.user.StudentModel;
-import models.user.UserModel;
+import models.user.*;
 import services.LectureService;
 import services.UserService;
 
 import java.util.LinkedList;
 
 public class UserController {
+    private final String DEFAULT_PASSWORD = "Hello World";
     static UserModel current_user;
     private final UserService userService;
     private final LectureService lectureService;
@@ -28,13 +25,15 @@ public class UserController {
             return "Lecturer";
         } else if (current_user instanceof StudentAffairsModel) {
             return "StudentAffairs";
+        } else if (current_user instanceof AdminModel){
+            return "Admin";
         }
         return "Invalid Credentials";
     }
 
     public LinkedList<String> getStudentGradesByLecturer(int student_id) {
         LinkedList<String> result = new LinkedList<>();
-        if (!userService.checkStudentExistence(student_id)) {
+        if (!userService.checkStudentExistenceByID(student_id)) {
             return null;
         }
         LinkedList<String> grades = userService.sendStudentGradesByLecturer((LecturerModel) current_user, student_id);
@@ -46,7 +45,7 @@ public class UserController {
     }
 
     public String updateGrade(int student_id, String lessonCode, int newGrade) {
-        if (!userService.checkStudentExistence(student_id)) {
+        if (!userService.checkStudentExistenceByID(student_id)) {
             return "Invalid Student ID";
         }
         if (!lectureService.checkExistenceByLectureCode(lessonCode)) {
@@ -58,6 +57,72 @@ public class UserController {
         if (userService.updateGrade(student_id, lessonCode, newGrade)) {
             return "Success";
         } else {
+            return "Something went wrong...";
+        }
+    }
+
+    public String createStudent(String full_name, String email, String phone_number,
+                                int studentID, String department) {
+        if  (!userService.checkStudentExistenceByStudentID(studentID)) {
+            return "Student already exists";
+        }
+        int invalid_id = -1;
+        StudentModel student = new StudentModel(
+                invalid_id,
+                DEFAULT_PASSWORD,
+                full_name,
+                email,
+                phone_number,
+                studentID,
+                department,
+                new LinkedList<>(),
+                new LinkedList<>(),
+                new LinkedList<>(),
+                new LinkedList<>()
+        );
+        if (userService.register(student)){
+            return "Success";
+        }else {
+            return "Something went wrong...";
+        }
+    }
+    public String createLecturer(String full_name, String email, String phone_number,
+                                 String department) {
+        int invalid_id = -1;
+        LecturerModel lecturer = new LecturerModel(
+                invalid_id,
+                DEFAULT_PASSWORD,
+                full_name,
+                email,
+                phone_number,
+                department,
+                new LinkedList<>(),
+                new LinkedList<>(),
+                new LinkedList<>(),
+                new LinkedList<>(),
+                new LinkedList<>()
+        );
+        if (userService.register(lecturer)){
+            return "Success";
+        }else {
+            return "Something went wrong...";
+        }
+    }
+    public String createStudentAffairs(String full_name, String email, String phone_number,
+                                int studentID, String department) {
+        int invalid_id = -1;
+        StudentAffairsModel studentAffairs = new StudentAffairsModel(
+                invalid_id,
+                DEFAULT_PASSWORD,
+                full_name,
+                email,
+                phone_number,
+                department,
+                new LinkedList<>()
+        );
+        if (userService.register(studentAffairs)){
+            return "Success";
+        }else {
             return "Something went wrong...";
         }
     }

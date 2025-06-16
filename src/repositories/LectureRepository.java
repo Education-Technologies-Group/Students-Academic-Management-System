@@ -66,12 +66,12 @@ public class LectureRepository {
     }
 
     // Edit Operations
-    void addLecture(LectureModel lecture) {
+    public void addLecture(LectureModel lecture) {
         lectures.add(lecture);
         db_changed = true;
     }
 
-    void removeLecture(LectureModel lecture) {
+    public void removeLecture(LectureModel lecture) {
         lectures.remove(lecture);
         db_changed = true;
 

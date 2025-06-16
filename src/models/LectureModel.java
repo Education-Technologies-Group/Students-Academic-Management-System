@@ -7,7 +7,7 @@ public class LectureModel {
     private String lectureCode ;
     private String lectureName ;
     private String syllabus;
-    private int lecturerid ;
+    private int lecturerID;
     private LinkedList<String> resources ;
 
 
@@ -16,7 +16,7 @@ public class LectureModel {
         this.lectureCode = lectureCode;
         this.lectureName = lectureName;
         this.syllabus = syllabus;
-        this.lecturerid = lecturerid;
+        this.lecturerID = lecturerid;
         this.resources = resources;
     }
 
@@ -54,11 +54,11 @@ public class LectureModel {
     }
 
     public int getLecturerID() {
-        return lecturerid;
+        return lecturerID;
     }
 
-    public void setLecturerID(int lecturerid) {
-        this.lecturerid = lecturerid;
+    public void setLecturerID(int lecturerID) {
+        this.lecturerID = lecturerID;
     }
 
     public LinkedList<String> getResources() {
