@@ -109,7 +109,7 @@ public class UserController {
         }
     }
     public String createStudentAffairs(String full_name, String email, String phone_number,
-                                int studentID, String department) {
+                                    String department) {
         int invalid_id = -1;
         StudentAffairsModel studentAffairs = new StudentAffairsModel(
                 invalid_id,

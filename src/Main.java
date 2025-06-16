@@ -3,6 +3,7 @@ import controllers.*;
 import models.TicketModel;
 import models.user.UserModel;
 import repositories.*;
+import repositories.user.AdminRepository;
 import repositories.user.LecturerRepository;
 import repositories.user.StudentAffairsRepository;
 import repositories.user.StudentRepository;
@@ -34,6 +35,7 @@ public class Main {
     public static StudentRepository studentRepository;
     public static LecturerRepository lecturerRepository;
     public static StudentAffairsRepository studentAffairsRepository;
+    public static AdminRepository adminRepository;
 
     public static LectureRepository lectureRepository;
     public static LiveSessionRepository liveSessionRepository;
@@ -105,8 +107,17 @@ public class Main {
                 }
 
                 // Admin Menu
-                case "Admin" -> displayAdminMenu();
+                case "Admin" -> {
+                    displayAdminMenu();
 
+                    int user_input = Integer.parseInt(input.nextLine());
+                    switch (user_input) {
+                        case 1 -> handleUserCreation();
+                        case 2 -> handleLectureCreation();
+                        case 5 -> logout();
+                        default -> System.out.println(" ❌ Invalid option try again ...");
+                    }
+                }
                 // No User Currently Logged In
                 default -> {
                     displayWelcomeScreen();
@@ -122,8 +133,6 @@ public class Main {
                     }
                 }
             }
-
-
         }
     }
 
@@ -134,6 +143,8 @@ public class Main {
         studentRepository = new StudentRepository();
         lecturerRepository = new LecturerRepository();
         studentAffairsRepository = new StudentAffairsRepository();
+        adminRepository = new AdminRepository();
+
 
         lectureRepository = new LectureRepository();
         liveSessionRepository = new LiveSessionRepository();
@@ -142,7 +153,7 @@ public class Main {
         ticketRepository = new TicketRepository();
 
         // Initialize Services
-        userService = new UserService(studentRepository, lecturerRepository, studentAffairsRepository, lectureRepository);
+        userService = new UserService(studentRepository, lecturerRepository, studentAffairsRepository, adminRepository, lectureRepository);
         lectureService = new LectureService(lecturerRepository, lectureRepository);
         liveSessionService = new LiveSessionService(liveSessionRepository, lectureRepository, studentRepository);
         assigmentService = new AssigmentService(assignmentRepository, lectureRepository, studentRepository);
@@ -151,7 +162,7 @@ public class Main {
 
         // Initialize Controllers
         userController = new UserController(userService, lectureService);
-        lectureController = new LectureController(lectureService);
+        lectureController = new LectureController(lectureService, userService);
         liveSessionController = new LiveSessionController(liveSessionService, lectureService);
         assignmentController = new AssignmentController(assigmentService, lectureService);
         announcementController = new AnnouncementController(announcementService, lectureService);
@@ -233,7 +244,7 @@ public class Main {
         System.out.println("Please select the operation you want to perform.");
         System.out.println(" 1️⃣ Create User");
         System.out.println(" 2️⃣ Create Lecture");
-        System.out.println(" 3️⃣ Create User");
+        System.out.println(" 2️⃣ Exit");
     }
 
     // Student Menu Operations
@@ -492,7 +503,7 @@ public class Main {
     // StudentAffairs Menu Operations
     public static void handleTicketSolve() {
         System.out.print("Enter the ID of ticket you want to mark as solved: ");
-        int  ticketID = Integer.parseInt(input.nextLine());
+        int ticketID = Integer.parseInt(input.nextLine());
 
         try {
             ticketID = Integer.parseInt(input.nextLine());
@@ -505,6 +516,102 @@ public class Main {
         } else {
             System.out.println("Error: " + response);
         }
+    }
+
+    // Admin Menu Operations
+    public static void handleUserCreation() {
+        // Necessary Inputs for Creating Student
+        int selected_user_type = 0;
+        String fullName;
+        String email;
+        String phoneNumber;
+
+        int studentID = 0;
+        String department;
+
+        System.out.println("You can Skip any of the Inputs by Pressing Enter where applicable...");
+
+        System.out.println("Pls Enter Which Type of User Do u Wanna Create: ");
+        System.out.println("   1️⃣  Student");
+        System.out.println("   2️⃣  Lecturer");
+        System.out.println("   3️⃣  StudentAffairs");
+        System.out.print("     --->");
+
+        try {
+            selected_user_type = Integer.parseInt(input.nextLine().trim());
+        } catch (NumberFormatException e) {
+            System.out.println("Please enter a valid student ID...");
+        }
+
+        System.out.print("Enter full name: ");
+        fullName = input.nextLine();
+
+        System.out.print("Enter email: ");
+        email = input.nextLine();
+
+        System.out.print("Enter phone number: ");
+        phoneNumber = input.nextLine();
+
+        if (selected_user_type == 1) {
+            System.out.print("Enter student ID: ");
+            try {
+                studentID = Integer.parseInt(input.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid student ID...");
+            }
+        }
+
+        System.out.print("Enter department: ");
+        department = input.nextLine();
+
+        String response = "";
+        switch (selected_user_type) {
+            case 1 -> response = userController.createStudent(fullName, email, phoneNumber, studentID, department);
+            case 2 -> response = userController.createLecturer(fullName, email, phoneNumber, department);
+            case 3 -> response = userController.createStudentAffairs(fullName, email, phoneNumber, department);
+        }
+        if (response.equals("Success")) {
+            System.out.println("User Created successfully!");
+        } else {
+            System.out.println("Error: " + response);
+        }
+
+
+    }
+
+    public static void handleLectureCreation() {
+        // Necessary Inputs for Creating Lecture
+        String lectureCode;
+        String lectureName;
+        String syllabus;
+        int lecturerID = -1;
+
+        System.out.println("You can Skip any of the Inputs by Pressing Enter where applicable...");
+
+        System.out.print("Enter lecture code: ");
+        lectureCode = input.nextLine().trim();
+
+        System.out.print("Enter lecture name: ");
+        lectureName = input.nextLine();
+
+        System.out.print("Enter syllabus (text or summary): ");
+        syllabus = input.nextLine();
+
+        System.out.print("Enter lecturer ID: ");
+        try {
+            lecturerID = Integer.parseInt(input.nextLine().trim());
+        } catch (NumberFormatException e) {
+            System.out.println("Please enter a valid lecturer ID...");
+        }
+
+        String response = lectureController.createLecture(lectureCode, lectureName, syllabus, lecturerID);
+
+        if (response.equals("Success")) {
+            System.out.println("Lecture created successfully!");
+        } else {
+            System.out.println("Error: " + response);
+        }
+
     }
 
 
