@@ -48,45 +48,47 @@ public class Main {
     static String user_role = "None";
     static boolean user_interface_active = true;
 
+
     public static void main(String[] args) throws IOException {
 
         initializeSystem();
-        System.out.println("\uD83C\uDF8A Welcome to SAMS !");
+        System.out.print("\uD83C\uDF8A Welcome to SAMS !");
         while (user_interface_active) {
             switch (user_role) {
                 // Student Menu
                 case "Student" -> {
                     displayStudentMenu();
-                    int user_input = Integer.parseInt(input.nextLine());
+                    String user_input = input.nextLine();
 
                     switch (user_input) {
-                        case 1 -> displayStudentLecturers();
-                        case 2 -> displayStudentGrades();
-                        case 3 -> handeUserLiveSessionJoin();
-                        case 4 -> displayStudentAssignments();
-                        case 5 -> displayStudentAnnouncements();
-                        case 6 -> displayTickets();
-                        case 7 -> handleTicketCreation();
-                        case 8 -> logout();
+                        case "1" -> displayStudentLecturers();
+                        case "2" -> displayStudentGrades();
+                        case "3" -> handeUserLiveSessionJoin();
+                        case "4" -> displayStudentAssignments();
+                        case "5" -> displayStudentAnnouncements();
+                        case "6" -> displayTickets();
+                        case "7" -> handleTicketCreation();
+                        case "8" -> logout();
+                        default -> System.out.println(" ❌ Invalid option try again ...");
                     }
                 }
 
                 // Lecturer Menu
                 case "Lecturer" -> {
                     displayLecturerMenu();
-                    int user_input = Integer.parseInt(input.nextLine());
+                    String user_input = input.nextLine();
                     switch (user_input) {
-                        case 1 -> displaySentAnnouncements();
-                        case 2 -> handleAddAnnouncement();
-                        case 3 -> handeDeleteAnnouncement();
-                        case 4 -> handleDisplayLectureAssignments();
-                        case 5 -> handleAddAssignment();
-                        case 6 -> handleDeleteAssignment();
-                        case 7 -> handleEditGrades();
-                        case 8 -> handleSessionCreation();
-                        case 9 -> handleTicketCreation();
-                        case 10 -> displayTickets();
-                        case 11 -> logout();
+                        case "1" -> displaySentAnnouncements();
+                        case "2" -> handleAddAnnouncement();
+                        case "3" -> handeDeleteAnnouncement();
+                        case "4" -> handleDisplayLectureAssignments();
+                        case "5" -> handleAddAssignment();
+                        case "6" -> handleDeleteAssignment();
+                        case "7" -> handleEditGrades();
+                        case "8" -> handleSessionCreation();
+                        case "9" -> handleTicketCreation();
+                        case "10" -> displayTickets();
+                        case "11" -> logout();
                         default -> System.out.println(" ❌ Invalid option try again ...");
                     }
                 }
@@ -95,13 +97,13 @@ public class Main {
                 // Student Affairs Menu
                 case "StudentAffairs" -> {
                     displayStudentAffairsMenu();
-                    int user_input = Integer.parseInt(input.nextLine());
+                    String  user_input = input.nextLine();
                     switch (user_input) {
-                        case 1 -> displayTickets();
-                        case 2 -> handleTicketSolve();
-                        case 3 -> handleAddAnnouncement();
-                        case 4 -> handeDeleteAnnouncement();
-                        case 5 -> logout();
+                        case "1" -> displayTickets();
+                        case "2" -> handleTicketSolve();
+                        case "3" -> handleAddAnnouncement();
+                        case "4" -> handeDeleteAnnouncement();
+                        case "5" -> logout();
                         default -> System.out.println(" ❌ Invalid option try again ...");
                     }
                 }
@@ -109,12 +111,12 @@ public class Main {
                 // Admin Menu
                 case "Admin" -> {
                     displayAdminMenu();
+                    String user_input = input.nextLine();
 
-                    int user_input = Integer.parseInt(input.nextLine());
                     switch (user_input) {
-                        case 1 -> handleUserCreation();
-                        case 2 -> handleLectureCreation();
-                        case 3 -> logout();
+                        case "1" -> handleUserCreation();
+                        case "2" -> handleLectureCreation();
+                        case "3" -> logout();
                         default -> System.out.println(" ❌ Invalid option try again ...");
                     }
                 }
