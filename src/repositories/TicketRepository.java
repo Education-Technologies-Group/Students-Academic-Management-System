@@ -39,6 +39,7 @@ public class TicketRepository {
         }
         return result;
     }
+
     public LinkedList<TicketModel> getTicketsByDepartment(String department) {
         LinkedList<TicketModel> result = new LinkedList<>();
         for (TicketModel ticket : tickets) {

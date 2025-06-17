@@ -1,4 +1,5 @@
 package controllers;
+
 import models.TicketModel;
 import models.user.LecturerModel;
 import models.user.StudentModel;
@@ -12,6 +13,7 @@ import static controllers.UserController.current_user;
 
 public class TicketController {
     private final TicketService ticketService;
+
     public TicketController(TicketService ticketService) {
         this.ticketService = ticketService;
     }
@@ -58,12 +60,12 @@ public class TicketController {
     }
 
     public String markTicketSolved(int ticketID) {
-        if (!ticketService.checkExistence(ticketID)){
+        if (!ticketService.checkExistence(ticketID)) {
             return "Invalid Ticket ID";
         }
-        if (ticketService.markSolved(ticketID)){
+        if (ticketService.markSolved(ticketID)) {
             return "Success";
-        }else {
+        } else {
             return "Something went wrong...";
         }
     }

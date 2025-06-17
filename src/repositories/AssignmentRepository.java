@@ -54,9 +54,10 @@ public class AssignmentRepository {
         }
         return result;
     }
+
     public LinkedList<AssignmentModel> getAssignmentsByLectureID(int lecture_id) {
         LinkedList<AssignmentModel> result = new LinkedList<>();
-        for ( AssignmentModel assigment : assignments) {
+        for (AssignmentModel assigment : assignments) {
             if (assigment.getBelongedLecture() == lecture_id) {
                 result.add(assigment);
             }
@@ -74,7 +75,7 @@ public class AssignmentRepository {
     }
 
     public boolean removeAssigment(int assigment_id) {
-        for  (AssignmentModel assignment : assignments) {
+        for (AssignmentModel assignment : assignments) {
             if (assignment.getId() == assigment_id) {
                 assignments.remove(assignment);
                 db_changed = true;
@@ -85,7 +86,7 @@ public class AssignmentRepository {
     }
 
     // File Operations
-    void loadFromCsv() throws FileNotFoundException {
+    private void loadFromCsv() throws FileNotFoundException {
         assignments = new LinkedList<>();
         Scanner sc = new Scanner(new File(DB_Path));
         String line;
@@ -113,7 +114,7 @@ public class AssignmentRepository {
         }
     }
 
-    void saveToCsv() throws FileNotFoundException {
+    private void saveToCsv() throws FileNotFoundException {
         try (FileWriter writer = new FileWriter(DB_Path)) {
             for (AssignmentModel assignment : assignments) {
                 writer.write(assignment.getId() + ",");

@@ -25,7 +25,7 @@ public class AnnouncementService {
         for (int id : lecture_id_list) {
             String lecture_code = lectureRepository.getLectureById(id).getLectureCode();
             LinkedList<AnnouncementModel> lecture_announcements = announcementRepository.getAnnouncementsByLectureCode(lecture_code);
-            for  (AnnouncementModel announcement : lecture_announcements) {
+            for (AnnouncementModel announcement : lecture_announcements) {
                 if (!result.contains(announcement)) {
                     result.add(announcement);
                 }
@@ -33,6 +33,7 @@ public class AnnouncementService {
         }
         return result;
     }
+
     public LinkedList<AnnouncementModel> sendSentAnnouncements(UserModel user) {
         return announcementRepository.getAnnouncementsBySenderID(user.getId());
     }
@@ -40,9 +41,11 @@ public class AnnouncementService {
     public boolean addAnnouncement(AnnouncementModel announcement) {
         return announcementRepository.addAnnouncement(announcement);
     }
+
     public boolean deleteAnnouncement(int announcement_id) {
         return announcementRepository.removeAnnouncement(announcement_id);
     }
+
     public boolean checkOwnership(UserModel user, int announcement_id) {
         return announcementRepository.getAnnouncementByID(announcement_id).getSenderId() == user.getId();
     }

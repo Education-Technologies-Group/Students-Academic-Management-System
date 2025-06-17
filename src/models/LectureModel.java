@@ -4,11 +4,11 @@ import java.util.LinkedList;
 
 public class LectureModel {
     private int id;
-    private String lectureCode ;
-    private String lectureName ;
+    private String lectureCode;
+    private String lectureName;
     private String syllabus;
     private int lecturerID;
-    private LinkedList<String> resources ;
+    private LinkedList<String> resources;
 
 
     public LectureModel(int id,String lectureCode, String lectureName, String syllabus, int lecturerid, LinkedList<String> resources) {

@@ -88,7 +88,7 @@ public class AnnouncementRepository {
     }
 
     public boolean removeAnnouncement(int announcement_id) {
-        for  (AnnouncementModel announcement : announcements) {
+        for (AnnouncementModel announcement : announcements) {
             if (announcement.getID() == announcement_id) {
                 announcements.remove(announcement);
                 db_changed = true;
@@ -99,7 +99,7 @@ public class AnnouncementRepository {
     }
 
     // File Operations
-    public void loadFromCsv() throws FileNotFoundException {
+    private void loadFromCsv() throws FileNotFoundException {
         announcements = new LinkedList<>();
         Scanner sc = new Scanner(new File(DB_Path));
         while (sc.hasNextLine()) {
@@ -123,7 +123,7 @@ public class AnnouncementRepository {
         }
     }
 
-    public void saveToCsv() {
+    private void saveToCsv() {
         try (FileWriter writer = new FileWriter(DB_Path)) {
             for (AnnouncementModel announcement : announcements) {
                 writer.write(announcement.getID() + ",");

@@ -1,19 +1,20 @@
 package models;
+
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 
 public class AssignmentModel {
-    private int id ;
+    private int id;
     private int belonged_lecture;
-    private String title ;
-    private String description ;
-    private LinkedList<String> attachedFiles ;
+    private String title;
+    private String description;
+    private LinkedList<String> attachedFiles;
     private float grade_weight;
     private LocalDateTime given_date;
     private LocalDateTime due_date;
 
     public AssignmentModel(int id, int belongedLecture, String title, String description, LinkedList<String> attachedFiles,
-                           float grade_weight , LocalDateTime given_date, LocalDateTime due_date) {
+                           float grade_weight, LocalDateTime given_date, LocalDateTime due_date) {
         this.id = id;
         belonged_lecture = belongedLecture;
         this.title = title;
@@ -63,6 +64,7 @@ public class AssignmentModel {
     public void setAttachedFiles(LinkedList<String> attachedFiles) {
         this.attachedFiles = attachedFiles;
     }
+
     public float getGradeWeight() {
         return grade_weight;
     }
@@ -87,8 +89,6 @@ public class AssignmentModel {
     public void setDueDate(LocalDateTime due_date) {
         this.due_date = due_date;
     }
-
-
 
 
 }

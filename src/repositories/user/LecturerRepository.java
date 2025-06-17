@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 import static repositories.user.UserRepository.last_pk;
 
-public class LecturerRepository implements  repositories.user.UserRepositoryInterface{
+public class LecturerRepository implements repositories.user.UserRepositoryInterface {
     String DB_PATH = "data/lecturers.csv";
     LinkedList<LecturerModel> lecturers;
     boolean db_changed = false;
@@ -61,7 +61,7 @@ public class LecturerRepository implements  repositories.user.UserRepositoryInte
         db_changed = true;
     }
 
-    void loadFromCSV() throws FileNotFoundException {
+    private void loadFromCSV() throws FileNotFoundException {
         lecturers = new LinkedList<>();
         Scanner sc = new Scanner(new File(DB_PATH));
         String line;
@@ -108,7 +108,7 @@ public class LecturerRepository implements  repositories.user.UserRepositoryInte
         }
     }
 
-    void saveToCSV() {
+    private void saveToCSV() {
         System.out.println("Saving Lecturers into Database");
         try (FileWriter writer = new FileWriter(DB_PATH)) {
             for (LecturerModel lecturer : lecturers) {

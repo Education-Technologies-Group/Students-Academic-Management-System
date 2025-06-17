@@ -24,6 +24,7 @@ public class AnnouncementModel {
         this.expirationDate = expirationDate;
         this.attachedFiles = attachedFiles;
     }
+
     public int getID() {
         return id;
     }
@@ -31,9 +32,11 @@ public class AnnouncementModel {
     public void setID(int id) {
         this.id = id;
     }
+
     public int getSenderId() {
         return sender_id;
     }
+
     public void setSenderId(int sender_id) {
         this.sender_id = sender_id;
     }

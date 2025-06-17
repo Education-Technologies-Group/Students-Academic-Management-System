@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 import static repositories.user.UserRepository.last_pk;
 
-public class StudentRepository implements  repositories.user.UserRepositoryInterface {
+public class StudentRepository implements repositories.user.UserRepositoryInterface {
     String DB_PATH = "data/students.csv";
     LinkedList<StudentModel> students;
     private boolean db_changed = false;
@@ -76,7 +76,7 @@ public class StudentRepository implements  repositories.user.UserRepositoryInter
 
     public LinkedList<Integer> getTicketsByID(int id) {
         for (StudentModel student : students) {
-            if  (student.getId() == id) {
+            if (student.getId() == id) {
                 return student.getTickets();
             }
         }
@@ -106,7 +106,7 @@ public class StudentRepository implements  repositories.user.UserRepositoryInter
     }
 
     // File Handlers
-    void loadFromCSV() throws FileNotFoundException {
+    private void loadFromCSV() throws FileNotFoundException {
         students = new LinkedList<>();
         Scanner sc = new Scanner(new File(DB_PATH));
         String line;
@@ -150,7 +150,7 @@ public class StudentRepository implements  repositories.user.UserRepositoryInter
         }
     }
 
-    void saveToCSV() {
+    private void saveToCSV() {
         System.out.println("Saving Students into Database");
         try (FileWriter writer = new FileWriter(DB_PATH)) {
             for (StudentModel student : students) {

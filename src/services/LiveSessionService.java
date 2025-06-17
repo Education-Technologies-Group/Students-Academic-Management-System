@@ -72,7 +72,7 @@ public class LiveSessionService {
     }
 
     public LinkedList<LiveSessionModel> listUserSessions(UserModel user) {
-        LinkedList<LiveSessionModel> user_sessions =  liveSessionRepository.getSessionsByUserID(user.getId());
+        LinkedList<LiveSessionModel> user_sessions = liveSessionRepository.getSessionsByUserID(user.getId());
         return user_sessions;
     }
 

@@ -80,9 +80,9 @@ public class UserController {
                 new LinkedList<>(),
                 new LinkedList<>()
         );
-        if (userService.register(student)){
+        if (userService.register(student)) {
             return "Success";
-        }else {
+        } else {
             return "Something went wrong...";
         }
     }

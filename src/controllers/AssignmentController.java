@@ -98,7 +98,7 @@ public class AssignmentController {
         if (!assignmentService.checkOwnership((LecturerModel) current_user, assignment_id)) {
             return "You are not allowed to delete this assignment!";
         }
-        if (!assignmentService.deleteAssignment(assignment_id)){
+        if (!assignmentService.deleteAssignment(assignment_id)) {
             return "Something Went Wrong...";
         }
         return "Success";

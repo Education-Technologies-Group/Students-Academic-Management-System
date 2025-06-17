@@ -26,8 +26,8 @@ public class AnnouncementController {
         for (AnnouncementModel announcement : announcements) {
             result.add(
                     announcement.geTitle() + " # " +
-                    announcement.getDescription() + " - " +
-                    announcement.getLectureCode());
+                            announcement.getDescription() + " - " +
+                            announcement.getLectureCode());
         }
         return result;
     }
@@ -38,7 +38,7 @@ public class AnnouncementController {
         for (AnnouncementModel announcement : announcements) {
             result.add(
                     "ID: " + announcement.getID() + "|" +
-                    announcement.geTitle() + " # " +
+                            announcement.geTitle() + " # " +
                             announcement.getDescription() + " - " +
                             announcement.getLectureCode());
         }
@@ -47,7 +47,7 @@ public class AnnouncementController {
 
     public String createAnnouncement(String lecture_code, String department, String title,
                                      String description, LinkedList<String> attached_files, String expiration_date) {
-        if (lecture_code.isEmpty() &&  department.isEmpty()) {
+        if (lecture_code.isEmpty() && department.isEmpty()) {
             return "You Need to Select a Target for Your Announcement!";
         }
 
@@ -57,7 +57,7 @@ public class AnnouncementController {
         LocalDateTime date;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         try {
-            date= LocalDateTime.parse(expiration_date, formatter);
+            date = LocalDateTime.parse(expiration_date, formatter);
         } catch (Exception e) {
             return "Invalid Expiration Date";
         }
@@ -72,20 +72,21 @@ public class AnnouncementController {
                 attached_files,
                 date
         );
-        if (announcementService.addAnnouncement(announcement)){
+        if (announcementService.addAnnouncement(announcement)) {
             return "Success";
         } else {
             return "Something Went Wrong...";
         }
     }
+
     public String deleteAnnouncement(int announcement_id) {
-        if (!announcementService.checkExistence(announcement_id)){
+        if (!announcementService.checkExistence(announcement_id)) {
             return "Invalid Announcement ID";
         }
         if (!announcementService.checkOwnership(current_user, announcement_id)) {
             return "You are not allowed to delete this announcement!";
         }
-        if (!announcementService.deleteAnnouncement(announcement_id)){
+        if (!announcementService.deleteAnnouncement(announcement_id)) {
             return "Something Went Wrong...";
         }
         return "Success";

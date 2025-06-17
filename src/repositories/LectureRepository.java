@@ -84,7 +84,7 @@ public class LectureRepository {
     }
 
     // File Handlers
-    void loadFromCsv() throws FileNotFoundException {
+    private void loadFromCsv() throws FileNotFoundException {
         lectures = new LinkedList<>();
         Scanner sc = new Scanner(new File(db_path));
         String line;
@@ -110,7 +110,7 @@ public class LectureRepository {
         }
     }
 
-    void saveToCsv() throws FileNotFoundException {
+    private void saveToCsv() throws FileNotFoundException {
         System.out.println("Saving lectures into csv ...");
         try (FileWriter writer = new FileWriter(db_path)) {
             for (LectureModel lecture : lectures) {

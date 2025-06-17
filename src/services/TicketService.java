@@ -24,6 +24,7 @@ public class TicketService {
         ticket.setResolved_date(LocalDateTime.now());
         return true;
     }
+
     public LinkedList<TicketModel> sendTickets(UserModel user) {
         if (user instanceof StudentModel || user instanceof LecturerModel) {
             return ticketRepository.getTicketsByOwnerID(user.getId());
@@ -48,7 +49,7 @@ public class TicketService {
     }
 
     public boolean createNewTicket(TicketModel ticket) {
-            return ticketRepository.addTicket(ticket);
+        return ticketRepository.addTicket(ticket);
     }
 
     public void listTicketsByOwner(int ownerID) {

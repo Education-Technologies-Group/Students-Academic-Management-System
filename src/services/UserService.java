@@ -80,32 +80,35 @@ public class UserService {
     public boolean checkStudentExistenceByID(int student_id) {
         return studentRepository.getStudentByStudentID(student_id) != null;
     }
+
     public boolean checkStudentExistenceByStudentID(int student_id) {
         return studentRepository.getStudentByStudentID(student_id) != null;
     }
-    public LinkedList<String> sendStudentGradesByLecturer(LecturerModel lecturer, int student_id){
+
+    public LinkedList<String> sendStudentGradesByLecturer(LecturerModel lecturer, int student_id) {
         LinkedList<String> result = new LinkedList<>();
         StudentModel student = studentRepository.getStudentByStudentID(student_id);
         Iterator<Integer> studentLectures = student.getSignedLectures().iterator();
         Iterator<Integer> studentGrades = student.getGrades().iterator();
         LinkedList<Integer> lecturerLectures = lecturer.getLectures();
-        while(studentLectures.hasNext()){
+        while (studentLectures.hasNext()) {
             int lecture_id = studentLectures.next();
             int grade = studentGrades.next();
             if (lecturerLectures.contains(lecture_id)) {
                 LectureModel lecture = lectureRepository.getLectureById(lecture_id);
-                result.add(lecture.getLectureCode()+","+grade);
+                result.add(lecture.getLectureCode() + "," + grade);
             }
         }
         return result;
     }
+
     public boolean updateGrade(int student_id, String lectureCode, int grade) {
         StudentModel student = studentRepository.getStudentByStudentID(student_id);
         LectureModel lecture = lectureRepository.getLectureByCode(lectureCode);
         LinkedList<Integer> studentLectures = student.getSignedLectures();
         LinkedList<Integer> studentGrades = student.getGrades();
-        int index = 0 ;
-        for (int signed_lecture_id: studentLectures){
+        int index = 0;
+        for (int signed_lecture_id : studentLectures) {
             if (signed_lecture_id == lecture.getId()) {
                 studentGrades.set(index, grade);
             }

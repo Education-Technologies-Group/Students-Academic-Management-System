@@ -37,6 +37,7 @@ public class AssignmentService {
     public boolean checkOwnership(LecturerModel lecturer, int assignment_id) {
         return lecturer.getLectures().contains(assigmentRepository.getAssigmentById(assignment_id).getBelongedLecture());
     }
+
     public boolean checkExistence(int assignment_id) {
         return assigmentRepository.getAssigmentById(assignment_id) != null;
     }

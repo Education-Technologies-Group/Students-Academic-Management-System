@@ -26,9 +26,9 @@ public class LiveSessionController {
         for (LiveSessionModel session : user_sessions) {
             result.add(
                     session.getId() + " - " +
-                    session.getTitle() + " - " +
-                    session.getScheduled_date() + " # " +
-                    session.getDescription());
+                            session.getTitle() + " - " +
+                            session.getScheduled_date() + " # " +
+                            session.getDescription());
         }
         return result;
     }
@@ -49,7 +49,7 @@ public class LiveSessionController {
         LocalDateTime date;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         try {
-            date= LocalDateTime.parse(scheduledDate, formatter);
+            date = LocalDateTime.parse(scheduledDate, formatter);
         } catch (Exception e) {
             return "Invalid Schedule Date";
         }
@@ -65,7 +65,7 @@ public class LiveSessionController {
                 new LinkedList<>(),
                 new LinkedList<>()
         );
-        if (liveSessionService.createNewSession(session, targetLecture)){
+        if (liveSessionService.createNewSession(session, targetLecture)) {
             return "Success";
         } else {
             return "Something Went Wrong...";

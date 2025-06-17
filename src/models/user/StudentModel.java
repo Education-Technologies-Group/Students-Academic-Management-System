@@ -13,7 +13,7 @@ public class StudentModel extends UserModel {
 
     public StudentModel(int id, String hashed_password, String full_name, String email, String phone_number,
                         int studentID, String department, LinkedList<Integer> grades, LinkedList<Integer> signed_lectures,
-                        LinkedList<Integer> assignments,LinkedList<Integer> tickets) {
+                        LinkedList<Integer> assignments, LinkedList<Integer> tickets) {
         super(id, hashed_password, full_name, email, phone_number);
         this.studentID = studentID;
         this.department = department;
