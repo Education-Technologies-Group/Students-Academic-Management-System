@@ -55,6 +55,7 @@ public class TicketRepository {
     }
 
     public boolean addTicket(TicketModel ticket) {
+        last_pk++;
         ticket.setId(last_pk);
         tickets.add(ticket);
         db_changed = true;
