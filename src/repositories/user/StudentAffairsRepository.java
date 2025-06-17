@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 import static repositories.user.UserRepository.last_pk;
 
 
-public class StudentAffairsRepository {
+public class StudentAffairsRepository implements  repositories.user.UserRepositoryInterface{
     String DB_PATH = "data/student_affairs.csv";
     LinkedList<StudentAffairsModel> student_affairs;
     boolean db_changed = false;

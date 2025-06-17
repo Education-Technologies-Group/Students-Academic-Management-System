@@ -15,10 +15,13 @@ public class LiveSessionRepository {
     private final String DB_PATH = "data/liveSessions.csv";
     private LinkedList<LiveSessionModel> sessions;
     private boolean db_changed = false;
-    int last_pk = 1;
+    int last_pk = 0;
 
     public LiveSessionRepository() throws IOException {
         loadFromCSV();
+        if (!sessions.isEmpty()) {
+            last_pk = Math.max(last_pk, sessions.getLast().getId());
+        }
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             if (db_changed) saveToCSV();
         }));
@@ -56,10 +59,11 @@ public class LiveSessionRepository {
 
     // Edit Operations
     public void addSession(LiveSessionModel session) {
+        last_pk++;
         session.setId(last_pk);
         sessions.add(session);
         db_changed = true;
-        last_pk++;
+
     }
 
     public void removeSession(LiveSessionModel session) {

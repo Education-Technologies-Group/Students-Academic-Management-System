@@ -1,7 +1,5 @@
 
 import controllers.*;
-import models.TicketModel;
-import models.user.UserModel;
 import repositories.*;
 import repositories.user.AdminRepository;
 import repositories.user.LecturerRepository;
@@ -27,7 +25,7 @@ public class Main {
     public static UserService userService;
     public static LectureService lectureService;
     public static LiveSessionService liveSessionService;
-    public static AssigmentService assigmentService;
+    public static AssignmentService assigmentService;
     public static AnnouncementService announcementService;
     public static TicketService ticketService;
 
@@ -156,7 +154,7 @@ public class Main {
         userService = new UserService(studentRepository, lecturerRepository, studentAffairsRepository, adminRepository, lectureRepository);
         lectureService = new LectureService(lecturerRepository, lectureRepository);
         liveSessionService = new LiveSessionService(liveSessionRepository, lectureRepository, studentRepository);
-        assigmentService = new AssigmentService(assignmentRepository, lectureRepository, studentRepository);
+        assigmentService = new AssignmentService(assignmentRepository, lectureRepository, studentRepository);
         announcementService = new AnnouncementService(announcementRepository, lectureRepository);
         ticketService = new TicketService(ticketRepository);
 

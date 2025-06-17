@@ -3,7 +3,7 @@ package controllers;
 import models.AssignmentModel;
 import models.user.LecturerModel;
 import models.user.StudentModel;
-import services.AssigmentService;
+import services.AssignmentService;
 import services.LectureService;
 
 import java.time.LocalDateTime;
@@ -13,10 +13,10 @@ import java.util.LinkedList;
 import static controllers.UserController.current_user;
 
 public class AssignmentController {
-    private final AssigmentService assignmentService;
+    private final AssignmentService assignmentService;
     private final LectureService lectureService;
 
-    public AssignmentController(AssigmentService assignmentService, LectureService lectureService) {
+    public AssignmentController(AssignmentService assignmentService, LectureService lectureService) {
         this.assignmentService = assignmentService;
         this.lectureService = lectureService;
     }
@@ -36,9 +36,13 @@ public class AssignmentController {
     }
 
     public LinkedList<String> sendLectureAssignments(String lectureCode) {
+        LinkedList<String> lecture_assignments = new LinkedList<>();
+        if (!lectureService.checkExistenceByLectureCode(lectureCode)) {
+            return lecture_assignments;
+        }
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd - HH:mm");
         LinkedList<AssignmentModel> assignments = assignmentService.sendLectureAssignments(lectureCode);
-        LinkedList<String> lecture_assignments = new LinkedList<>();
         for (AssignmentModel assignment : assignments) {
             lecture_assignments.add(
                     "ID: " + assignment.getId() + "|" +
@@ -88,6 +92,9 @@ public class AssignmentController {
     }
 
     public String deleteAssignment(int assignment_id) {
+        if (!assignmentService.checkExistence(assignment_id)) {
+            return "Assignment ID Invalid";
+        }
         if (!assignmentService.checkOwnership((LecturerModel) current_user, assignment_id)) {
             return "You are not allowed to delete this assignment!";
         }

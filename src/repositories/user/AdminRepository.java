@@ -10,7 +10,7 @@ import java.util.*;
 
 import static repositories.user.UserRepository.last_pk;
 
-public class AdminRepository {
+public class AdminRepository implements  repositories.user.UserRepositoryInterface{
     String DB_PATH = "data/admins.csv";
     LinkedList<AdminModel> admins;
     private boolean db_changed = false;
@@ -58,7 +58,7 @@ public class AdminRepository {
     }
 
     // File Handlers
-    void loadFromCSV() throws FileNotFoundException {
+    private void loadFromCSV() throws FileNotFoundException {
         admins = new LinkedList<>();
         Scanner sc = new Scanner(new File(DB_PATH));
         String line;
@@ -80,7 +80,7 @@ public class AdminRepository {
         }
     }
 
-    void saveToCSV() {
+    private void saveToCSV() {
         try (FileWriter writer = new FileWriter(DB_PATH)) {
             for (AdminModel student : admins) {
                 writer.write(student.getId() + ",");

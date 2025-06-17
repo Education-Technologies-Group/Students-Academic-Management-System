@@ -15,9 +15,13 @@ public class LectureRepository {
     String db_path = "data/lectures.csv";
     LinkedList<LectureModel> lectures;
     boolean db_changed = false;
+    int last_pk;
 
     public LectureRepository() throws FileNotFoundException {
         loadFromCsv();
+        if (!lectures.isEmpty()) {
+            last_pk = Math.max(last_pk, lectures.getLast().getId());
+        }
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             if (db_changed) {
                 try {
@@ -67,6 +71,8 @@ public class LectureRepository {
 
     // Edit Operations
     public void addLecture(LectureModel lecture) {
+        last_pk++;
+        lecture.setId(last_pk);
         lectures.add(lecture);
         db_changed = true;
     }

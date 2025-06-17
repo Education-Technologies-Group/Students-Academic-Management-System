@@ -9,12 +9,12 @@ import repositories.user.StudentRepository;
 
 import java.util.LinkedList;
 
-public class AssigmentService {
+public class AssignmentService {
     private final AssignmentRepository assigmentRepository;
     private final LectureRepository lectureRepository;
     private final StudentRepository studentRepository;
 
-    public AssigmentService(AssignmentRepository assigmentRepository, LectureRepository lectureRepository, StudentRepository studentRepository) {
+    public AssignmentService(AssignmentRepository assigmentRepository, LectureRepository lectureRepository, StudentRepository studentRepository) {
         this.assigmentRepository = assigmentRepository;
         this.lectureRepository = lectureRepository;
         this.studentRepository = studentRepository;
@@ -36,6 +36,9 @@ public class AssigmentService {
 
     public boolean checkOwnership(LecturerModel lecturer, int assignment_id) {
         return lecturer.getLectures().contains(assigmentRepository.getAssigmentById(assignment_id).getBelongedLecture());
+    }
+    public boolean checkExistence(int assignment_id) {
+        return assigmentRepository.getAssigmentById(assignment_id) != null;
     }
 
     public boolean deleteAssignment(int assignmentId) {

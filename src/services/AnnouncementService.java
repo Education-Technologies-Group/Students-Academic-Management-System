@@ -48,6 +48,7 @@ public class AnnouncementService {
     }
 
 
-
-
+    public boolean checkExistence(int announcementId) {
+        return announcementRepository.getAnnouncementByID(announcementId) != null;
+    }
 }

@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 import static repositories.user.UserRepository.last_pk;
 
-public class LecturerRepository {
+public class LecturerRepository implements  repositories.user.UserRepositoryInterface{
     String DB_PATH = "data/lecturers.csv";
     LinkedList<LecturerModel> lecturers;
     boolean db_changed = false;
@@ -50,6 +50,8 @@ public class LecturerRepository {
     }
 
     public void addLecturer(LecturerModel lecturer) {
+        last_pk++;
+        lecturer.setId(last_pk);
         lecturers.add(lecturer);
         db_changed = true;
     }

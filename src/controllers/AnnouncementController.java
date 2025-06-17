@@ -79,6 +79,9 @@ public class AnnouncementController {
         }
     }
     public String deleteAnnouncement(int announcement_id) {
+        if (!announcementService.checkExistence(announcement_id)){
+            return "Invalid Announcement ID";
+        }
         if (!announcementService.checkOwnership(current_user, announcement_id)) {
             return "You are not allowed to delete this announcement!";
         }
