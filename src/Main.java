@@ -13,6 +13,8 @@ import java.util.Scanner;
 
 public class Main {
 
+    public static final String ANSI_CYAN = "\u001B[34m";
+    public static final String ANSI_RESET = "\u001B[0m";
     // Controllers
     public static UserController userController;
     public static LectureController lectureController;
@@ -126,7 +128,6 @@ public class Main {
                         case "2" -> logout();
                         default -> {
                             System.out.println(" ❌ Invalid option try again ...");
-                            System.out.print("--> :");
                         }
                     }
                 }
@@ -169,9 +170,11 @@ public class Main {
 
     // Auth
     public static void login() {
+        printThickSeparator(ANSI_CYAN);
         System.out.print("\n📧 Please enter your email : ");
         String email = input.nextLine();
         System.out.print("\n🔒 Please enter your password : ");
+
         String password = input.nextLine();
         String response = userController.login(email, password);
         switch (response) {
@@ -191,13 +194,18 @@ public class Main {
 
     // User Menus
     public static void displayWelcomeScreen() {
+        System.out.println();
+        printThickSeparator(ANSI_CYAN);
         System.out.println("Please choose one of the following options:");
         System.out.println("   1️⃣  Login");
         System.out.println("   2️⃣  Exit ");
         System.out.print("--> :");
+
     }
 
     public static void displayStudentMenu() {
+        System.out.println();
+        printThickSeparator(ANSI_CYAN);
         System.out.println("Please select the operation you want to perform.");
         System.out.println("   1️⃣  View Lectures");
         System.out.println("   2️⃣  View Grades");
@@ -208,9 +216,12 @@ public class Main {
         System.out.println("   7️⃣  Add Ticket");
         System.out.println("   8️⃣  Exit");
         System.out.print("--> :");
+
     }
 
     public static void displayLecturerMenu() {
+        System.out.println();
+        printThickSeparator(ANSI_CYAN);
         System.out.println("Please select the operation you want to perform.");
         System.out.println(" 1️⃣  Display Sent Announcements");
         System.out.println(" 2️⃣  Add Announcement");
@@ -225,10 +236,11 @@ public class Main {
         System.out.println("1️⃣1️⃣  Exit");
         System.out.print("-->");
 
-
     }
 
     public static void displayStudentAffairsMenu() {
+        System.out.println();
+        printThickSeparator(ANSI_CYAN);
         System.out.println("Please select the operation you want to perform.");
         System.out.println(" 1️⃣  Ticket Requests");
         System.out.println(" 2️⃣  Mark Ticket as Solved");
@@ -236,14 +248,18 @@ public class Main {
         System.out.println(" 4️⃣  Delete Announcement");
         System.out.println(" 5️⃣  Exit");
         System.out.print("-->");
+
     }
 
     public static void displayAdminMenu() {
+        System.out.println();
+        printThickSeparator(ANSI_CYAN);
         System.out.println("Please select the operation you want to perform.");
         System.out.println(" 1️⃣ Create User");
         System.out.println(" 2️⃣ Create Lecture");
         System.out.println(" 3️⃣ Exit");
         System.out.print("-->");
+
     }
 
     // Student Menu Operations
@@ -256,6 +272,7 @@ public class Main {
     }
 
     public static void displayStudentGrades() {
+
         System.out.println("\uD83D\uDCCA Your Grades: ");
         LinkedList<String> grade_lines = lectureController.getStudentLectureGrades();
         for (String grade : grade_lines) {
@@ -264,6 +281,7 @@ public class Main {
     }
 
     public static void handeUserLiveSessionJoin() {
+
         System.out.println("Invited Live Sessions: ");
         LinkedList<String> sessions = liveSessionController.sendSessions();
         for (String session : sessions) {
@@ -281,6 +299,7 @@ public class Main {
 
     public static void displayStudentAssignments() {
         LinkedList<String> assignments = assignmentController.sendStudentAssignments();
+
         System.out.println("\uD83D\uDCD6 Your Assignments: ");
         for (String assignment : assignments) {
             System.out.println(assignment);
@@ -290,6 +309,7 @@ public class Main {
 
     public static void displayStudentAnnouncements() {
         LinkedList<String> announcements = announcementController.sendStudentAnnouncements();
+
         System.out.println("\uD83D\uDCE2 Your Announcements: ");
         for (String announcement : announcements) {
             System.out.println(announcement);
@@ -306,6 +326,7 @@ public class Main {
     }
 
     public static void handleDisplayLectureAssignments() {
+
         System.out.print("Pls enter lecture code to display it's assignments: ");
         String lectureCode = input.nextLine().trim();
         LinkedList<String> assignments = assignmentController.sendLectureAssignments(lectureCode);
@@ -370,6 +391,7 @@ public class Main {
     }
 
     public static void handleDeleteAssignment() {
+        printThickSeparator(ANSI_CYAN);
         System.out.print("Pls enter the ID of the assignment you want to delete: ");
         int assignemntID = -1;
         try {
@@ -679,11 +701,9 @@ public class Main {
         }
     }
 
-
-    // Helpers
-    public static void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+    public static void printThickSeparator(String color) {
+        String thickLine = "█████████████████████████████████████████████████████";
+        System.out.println(color + thickLine + ANSI_RESET);
     }
 
 
