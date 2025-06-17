@@ -13,9 +13,13 @@ public class TicketRepository {
     private final String DB_PATH = "data/tickets.csv";
     private LinkedList<TicketModel> tickets;
     private boolean db_changed = false;
+    private int last_pk;
 
     public TicketRepository() throws IOException {
         loadFromCSV();
+        if (!tickets.isEmpty()) {
+            last_pk = Math.max(last_pk, tickets.getLast().getId());
+        }
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             if (db_changed) saveToCSV();
         }));
@@ -51,6 +55,7 @@ public class TicketRepository {
     }
 
     public boolean addTicket(TicketModel ticket) {
+        ticket.setId(last_pk);
         tickets.add(ticket);
         db_changed = true;
         return true;
